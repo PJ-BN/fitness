@@ -1,39 +1,38 @@
 
 import React from 'react';
 import useFetchExercises from '../hooks/useFetchExercises';
+import styles from './ExercisePage.module.css';
 
 const ExercisePage: React.FC = () => {
   const { exercises, loading, error } = useFetchExercises();
 
   if (loading) {
-    return <div>Loading exercises...</div>;
+    return <div className={styles.loading}>Loading exercises...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className={styles.error}>Error: {error}</div>;
   }
 
   return (
-    <div>
-      <h1>Exercise Page</h1>
-      <p>Browse and manage exercises here.</p>
-      <h2>Available Exercises:</h2>
+    <div className={styles.exercisePageContainer}>
+      <h1 className={styles.pageTitle}>Exercise Library</h1>
+      <p className={styles.pageDescription}>Explore a wide range of exercises to enhance your fitness journey. Each exercise includes detailed information on its description, category, muscle groups targeted, and required equipment.</p>
+
       {exercises.length === 0 ? (
-        <p>No exercises found.</p>
+        <div className={styles.noExercises}>No exercises found. Start by adding some!</div>
       ) : (
-        <ul>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
-            {exercises.map((exercise) => (
-              <div key={exercise.id} style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '15px', boxShadow: '2px 2px 8px rgba(0,0,0,0.1)' }}>
-                <h3>{exercise.name}</h3>
-                <p><strong>Description:</strong> {exercise.description}</p>
-                <p><strong>Category:</strong> {exercise.category}</p>
-                <p><strong>Muscle Groups:</strong> {exercise.muscleGroups}</p>
-                <p><strong>Equipment:</strong> {exercise.equipment}</p>
-              </div>
-            ))}
-          </div>
-        </ul>
+        <div className={styles.exerciseGrid}>
+          {exercises.map((exercise) => (
+            <div key={exercise.id} className={styles.exerciseCard}>
+              <h3>{exercise.name}</h3>
+              <p><strong>Description:</strong> {exercise.description}</p>
+              <p><strong>Category:</strong> {exercise.category}</p>
+              <p><strong>Muscle Groups:</strong> {exercise.muscleGroups}</p>
+              <p><strong>Equipment:</strong> {exercise.equipment}</p>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

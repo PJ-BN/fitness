@@ -1,17 +1,16 @@
 
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import styles from './Navbar.module.css';
 import { FaTachometerAlt, FaClipboardList, FaDumbbell, FaBullseye, FaChartBar, FaAppleAlt, FaUser, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
 
-const Navbar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const navigate = useNavigate();
+interface NavbarProps {
+  isCollapsed: boolean;
+  onToggle: () => void;
+}
 
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
+const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onToggle }) => {
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     Cookies.remove('token');
@@ -31,7 +30,7 @@ const Navbar = () => {
       <div className={styles.profileSection}>
         <Link to="/profile" className={styles.navItem}><FaUser /><span>Profile</span></Link>
         <div className={styles.navItem} onClick={handleLogout}><FaSignOutAlt /><span>Logout</span></div>
-        <div className={styles.collapseButton} onClick={toggleCollapse}>
+        <div className={styles.collapseButton} onClick={onToggle}>
           {isCollapsed ? <FaBars /> : <FaTimes />}
         </div>
       </div>

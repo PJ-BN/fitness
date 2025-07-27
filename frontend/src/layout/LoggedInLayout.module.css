@@ -7,4 +7,9 @@
   flex-grow: 1;
   padding: 20px;
   margin-left: 220px; /* Adjust for the fixed navbar width */
+  transition: margin-left 0.3s ease-in-out; /* Smooth transition */
+}
+
+.mainContentCollapsed {
+  margin-left: 80px; /* Adjust for collapsed navbar width */
 }
