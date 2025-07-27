@@ -1,0 +1,144 @@
+.features {
+  padding: 100px 20px;
+  text-align: center;
+  background-color: var(--color-dark-bg); /* Use global dark background */
+  color: var(--color-text-light);
+}
+
+.features h2 {
+  font-size: 3em;
+  margin-bottom: 60px;
+  color: var(--color-accent-green); /* Vibrant green for headings */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  max-width: 90%;
+  margin: 0 auto 80px auto;
+}
+
+.featureItem {
+  background-color: var(--color-dark-card); /* Darker card background */
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border 0.4s ease;
+  border: 2px solid transparent; /* Initial transparent border */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.featureItem:hover {
+  transform: translateY(-10px) scale(1.02); /* More pronounced lift */
+  box-shadow: 0 12px 25px rgba(0, 230, 118, 0.3); /* Green glow on hover */
+  border: 2px solid var(--color-accent-green); /* Green border on hover */
+}
+
+.featureItem h3 {
+  font-size: 2.2em;
+  margin-bottom: 20px;
+  color: var(--color-accent-green); /* Vibrant green for card headings */
+  text-transform: uppercase;
+}
+
+.featureItem p {
+  font-size: 1.1em;
+  color: var(--color-text-medium); /* Lighter text for readability */
+  line-height: 1.6;
+}
+
+.workoutTracking {
+  background-color: var(--color-dark-card); /* Distinct background for tracking section */
+  padding: 60px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  max-width: 80%;
+  margin: 0 auto;
+  border: 2px solid var(--color-accent-blue); /* Blue border for emphasis */
+}
+
+.workoutTracking h3 {
+  font-size: 2.5em;
+  margin-bottom: 25px;
+  color: var(--color-accent-blue); /* Blue for tracking heading */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.workoutTracking p {
+  font-size: 1.2em;
+  color: var(--color-text-medium);
+  margin-bottom: 40px;
+}
+
+.trackingDemo {
+  max-width: 90%; /* Control carousel width from here */
+  margin: 0 auto;
+}
+
+.trackingDemo img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .features h2 {
+    font-size: 2.5em;
+  }
+
+  .featuresGrid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .featureItem h3 {
+    font-size: 1.8em;
+  }
+
+  .featureItem p {
+    font-size: 1em;
+  }
+
+  .workoutTracking {
+    padding: 40px;
+  }
+
+  .workoutTracking h3 {
+    font-size: 2em;
+  }
+
+  .workoutTracking p {
+    font-size: 1.1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .features {
+    padding: 60px 15px;
+  }
+
+  .features h2 {
+    font-size: 2em;
+  }
+
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .workoutTracking {
+    padding: 30px;
+  }
+
+  .workoutTracking h3 {
+    font-size: 1.8em;
+  }
+}

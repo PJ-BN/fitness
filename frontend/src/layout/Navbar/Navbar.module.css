@@ -1,0 +1,105 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 220px; /* A bit wider for better spacing */
+  background: #2c3e50; /* A modern, dark slate blue */
+  color: #ecf0f1; /* A soft off-white */
+  padding: 20px 15px;
+  transition: width 0.3s ease-in-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.navbar.collapsed {
+  width: 80px;
+  align-items: center; /* Center icons when collapsed */
+}
+
+.navItems {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  padding: 15px 10px;
+  cursor: pointer;
+  border-radius: 8px; /* Rounded corners for a softer look */
+  margin-bottom: 5px;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide text that overflows during transition */
+  color: #ecf0f1; /* Ensure text is visible */
+  text-decoration: none; /* Remove underline */
+}
+
+.navItem:hover {
+  background: #4a627a; /* A more distinct, yet harmonious shade on hover */
+  color: #ffffff; /* Slightly brighter text on hover */
+}
+
+.navItem svg {
+  margin-right: 15px;
+  min-width: 30px; /* Consistent icon spacing */
+  font-size: 1.2rem; /* Slightly larger icons */
+  transition: margin 0.3s ease-in-out;
+}
+
+.navbar.collapsed .navItem svg {
+  margin-right: 0; /* Remove margin when collapsed */
+}
+
+.navItem span {
+  opacity: 1;
+  transition: opacity 0.2s 0.1s ease-in-out; /* Fade effect with a slight delay */
+}
+
+.navbar.collapsed .navItem span {
+  opacity: 0;
+  width: 0;
+}
+
+.profileSection {
+  margin-top: auto;
+  width: 100%;
+}
+
+.collapseButton {
+  margin-top: 20px;
+  padding: 10px 0;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.collapseButton:hover {
+  background: #34495e;
+}
+
+.collapseButton svg {
+  font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    width: 80px;
+    align-items: center;
+  }
+
+  .navbar .navItem span {
+    display: none;
+  }
+  
+  .navbar .navItem svg {
+    margin-right: 0;
+  }
+
+  .collapseButton {
+    display: none; 
+  }
+}

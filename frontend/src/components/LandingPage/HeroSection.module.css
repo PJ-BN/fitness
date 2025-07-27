@@ -1,0 +1,132 @@
+.hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/anastase-maragos-7kEpUPB8vNk-unsplash.jpg') no-repeat center center/cover;
+  background-attachment: fixed; /* Parallax effect */
+  color: var(--color-white);
+  text-align: center;
+  padding: 120px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh; /* More prominent hero */
+  position: relative;
+  overflow: hidden;
+}
+
+.heroContent {
+  max-width: 90%;
+  z-index: 2; /* Ensure content is above overlay */
+}
+
+.heroContent h1 {
+  font-size: 4.5em;
+  margin-bottom: 25px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.heroContent p {
+  font-size: 1.8em;
+  margin-bottom: 50px;
+  line-height: 1.5;
+  color: var(--color-text-light);
+}
+
+.ctaButtons a {
+  padding: 18px 40px;
+  font-size: 1.4em;
+  border: none;
+  border-radius: 50px; /* Pill shape */
+  cursor: pointer;
+  margin: 0 15px;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.signUpButton {
+  background-color: var(--color-accent-green);
+  color: var(--color-dark-bg);
+  box-shadow: 0 5px 15px rgba(0, 230, 118, 0.4);
+}
+
+.signUpButton:hover {
+  background-color: #00c853;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 230, 118, 0.6);
+}
+
+.loginButton {
+  background-color: transparent;
+  color: var(--color-accent-blue);
+  border: 2px solid var(--color-accent-blue);
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+}
+
+.loginButton:hover {
+  background-color: var(--color-accent-blue);
+  color: var(--color-white);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .heroContent h1 {
+    font-size: 3.5em;
+  }
+
+  .heroContent p {
+    font-size: 1.5em;
+  }
+
+  .ctaButtons a {
+    padding: 15px 30px;
+    font-size: 1.2em;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 80px 15px;
+    min-height: 70vh;
+  }
+
+  .heroContent h1 {
+    font-size: 2.8em;
+  }
+
+  .heroContent p {
+    font-size: 1.2em;
+  }
+
+  .ctaButtons a {
+    padding: 12px 25px;
+    font-size: 1em;
+    margin: 10px 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroContent h1 {
+    font-size: 2.2em;
+  }
+
+  .heroContent p {
+    font-size: 1em;
+  }
+
+  .ctaButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ctaButtons a {
+    width: 80%;
+    margin: 8px 0;
+  }
+}

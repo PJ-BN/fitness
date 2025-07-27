@@ -1,0 +1,44 @@
+.aboutUs {
+  padding: 100px 20px;
+  text-align: center;
+  background-color: var(--color-dark-bg); /* Consistent dark background */
+  color: var(--color-text-light);
+  border-top: 2px solid var(--color-accent-green); /* Subtle separator */
+}
+
+.aboutUs h2 {
+  font-size: 3em;
+  margin-bottom: 40px;
+  color: var(--color-accent-green);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.aboutUs p {
+  font-size: 1.1em;
+  line-height: 1.8;
+  max-width: 80%;
+  margin: 0 auto 25px auto;
+  color: var(--color-text-medium);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .aboutUs h2 {
+    font-size: 2.5em;
+  }
+
+  .aboutUs p {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .aboutUs {
+    padding: 60px 15px;
+  }
+
+  .aboutUs h2 {
+    font-size: 2em;
+  }
+}

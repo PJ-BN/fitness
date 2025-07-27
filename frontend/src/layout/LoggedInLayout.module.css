@@ -1,0 +1,10 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.mainContent {
+  flex-grow: 1;
+  padding: 20px;
+  margin-left: 220px; /* Adjust for the fixed navbar width */
+}

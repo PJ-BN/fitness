@@ -1,0 +1,87 @@
+.benefits {
+  padding: 100px 20px;
+  text-align: center;
+  background-color: var(--color-dark-card); /* Use card background color */
+  color: var(--color-text-light);
+}
+
+.benefits h2 {
+  font-size: 3em;
+  margin-bottom: 60px;
+  color: var(--color-accent-green);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.benefitsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.benefitItem {
+  background-color: var(--color-dark-bg); /* Darker background for items */
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border 0.4s ease;
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.benefitItem:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 12px 25px rgba(0, 230, 118, 0.3);
+  border: 2px solid var(--color-accent-green);
+}
+
+.benefitItem h3 {
+  font-size: 2.2em;
+  margin-bottom: 15px;
+  color: var(--color-accent-blue);
+  text-transform: uppercase;
+}
+
+.benefitItem p {
+  font-size: 1.1em;
+  color: var(--color-text-medium);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .benefits h2 {
+    font-size: 2.5em;
+  }
+
+  .benefitsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .benefitItem h3 {
+    font-size: 1.8em;
+  }
+
+  .benefitItem p {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .benefits {
+    padding: 60px 15px;
+  }
+
+  .benefits h2 {
+    font-size: 2em;
+  }
+
+  .benefitsGrid {
+    grid-template-columns: 1fr;
+  }
+}
