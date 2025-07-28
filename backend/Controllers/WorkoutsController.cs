@@ -1,4 +1,5 @@
 using Fitness.Models;
+using Fitness.Models.DTOs;
 using Fitness.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -51,8 +52,17 @@ namespace Fitness.Controllers
 
         // POST: api/Workouts
         [HttpPost]
-        public async Task<ActionResult<ApiResponse<Workout>>> PostWorkout(Workout workout)
+        public async Task<ActionResult<ApiResponse<Workout>>> PostWorkout(WorkoutDto workoutDto)
         {
+            var workout = new Workout
+            {
+                UserId = workoutDto.UserId,
+                Date = workoutDto.Date,
+                Notes = workoutDto.Notes,
+                CreatedAt = workoutDto.CreatedAt,
+                UpdatedAt = workoutDto.UpdatedAt
+            };
+
             var createdWorkout = await _workoutService.CreateWorkoutAsync(workout);
             return CreatedAtAction(nameof(GetWorkout), new { id = createdWorkout.Id }, ApiResponse<Workout>.SuccessResponse(createdWorkout, "Workout created successfully."));
         }

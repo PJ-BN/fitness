@@ -1,4 +1,5 @@
 using Fitness.Models;
+using Fitness.Models.DTOs;
 using Fitness.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -51,8 +52,16 @@ namespace Fitness.Controllers
 
         // POST: api/UserMetrics
         [HttpPost]
-        public async Task<ActionResult<ApiResponse<UserMetric>>> PostUserMetric(UserMetric userMetric)
+        public async Task<ActionResult<ApiResponse<UserMetric>>> PostUserMetric(UserMetricDto userMetricDto)
         {
+            var userMetric = new UserMetric
+            {
+                UserId = userMetricDto.UserId,
+                Date = userMetricDto.Date,
+                Weight = userMetricDto.Weight,
+                BodyFatPercentage = userMetricDto.BodyFatPercentage
+            };
+
             var createdUserMetric = await _userMetricService.CreateUserMetricAsync(userMetric);
             return CreatedAtAction(nameof(GetUserMetric), new { id = createdUserMetric.Id }, ApiResponse<UserMetric>.SuccessResponse(createdUserMetric, "User metric created successfully."));
         }

@@ -1,4 +1,5 @@
 using Fitness.Models;
+using Fitness.Models.DTOs;
 using Fitness.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -51,8 +52,18 @@ namespace Fitness.Controllers
 
         // POST: api/Goals
         [HttpPost]
-        public async Task<ActionResult<ApiResponse<Goal>>> PostGoal(Goal goal)
+        public async Task<ActionResult<ApiResponse<Goal>>> PostGoal(GoalDto goalDto)
         {
+            var goal = new Goal
+            {
+                UserId = goalDto.UserId,
+                Description = goalDto.Description,
+                TargetValue = goalDto.TargetValue,
+                CurrentValue = goalDto.CurrentValue,
+                Deadline = goalDto.Deadline,
+                Status = goalDto.Status
+            };
+
             var createdGoal = await _goalService.CreateGoalAsync(goal);
             return CreatedAtAction(nameof(GetGoal), new { id = createdGoal.Id }, ApiResponse<Goal>.SuccessResponse(createdGoal, "Goal created successfully."));
         }

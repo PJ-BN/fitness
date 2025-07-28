@@ -3,6 +3,7 @@ using Fitness.Data;
 using Fitness.Services;
 using Fitness.Services.Interfaces;
 using Fitness.Models;
+using Fitness.Models.DTOs; // Add DTOs namespace
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
