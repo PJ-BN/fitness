@@ -4,6 +4,8 @@ import Cookies from 'js-cookie';
 const API_BASE_URL = 'https://localhost:7071'; // Replace with your backend API base URL
 
 async function request<T>(method: string, endpoint: string, body?: any): Promise<ApiResponseWithData<T> | ApiResponse> {
+  console.log('--- DEBUG: request in apiClient.ts ---');
+  console.log('Request details:', { method, endpoint, body });
   try {
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -113,12 +115,21 @@ const apiClient = {
 
   // Day Routines endpoints
   dayRoutines: {
+    getByWeeklyRoutine: (weeklyRoutineId: string) => apiClient.get<any>(`api/DayRoutines/by-weekly-routine/${weeklyRoutineId}`),
     // Basic CRUD operations
     getAll: () => apiClient.get<any[]>('api/DayRoutines'),
     getById: (id: string) => apiClient.get<any>(`api/DayRoutines/${id}`),
     create: (dayRoutineData: any) => apiClient.post<any>('api/DayRoutines', dayRoutineData),
     update: (id: string, dayRoutineData: any) => apiClient.put<any>(`api/DayRoutines/${id}`, dayRoutineData),
     delete: (id: string) => apiClient.delete<any>(`api/DayRoutines/${id}`),
+    
+    // Update day routine with rest day status
+    updateDayRoutine: (dayRoutineId: string, data: {
+      weeklyRoutineId: number;
+      dayOfWeek: number;
+      dayName: string;
+      isRestDay: boolean;
+    }) => apiClient.put<any>(`api/DayRoutines/${dayRoutineId}`, data),
     
     // Body parts operations
     getBodyParts: (dayId: string) => apiClient.get<any[]>(`api/DayRoutines/${dayId}/bodyparts`),
@@ -135,10 +146,12 @@ const apiClient = {
   // Direct API endpoints for body parts and exercises
   dayRoutineBodyParts: {
     create: (bodyPartData: any) => apiClient.post<any>('api/DayRoutineBodyParts', bodyPartData),
+    deleteByDayRoutine: (dayRoutineId: string) => apiClient.delete<any>(`api/DayRoutineBodyParts/by-day-routine/${dayRoutineId}`),
   },
 
   dayRoutineExercises: {
     create: (exerciseData: any) => apiClient.post<any>('api/DayRoutineExercises', exerciseData),
+    deleteByDayRoutine: (dayRoutineId: string) => apiClient.delete<any>(`api/DayRoutineExercises/by-day-routine/${dayRoutineId}`),
   },
 
   // Legacy routines for backward compatibility

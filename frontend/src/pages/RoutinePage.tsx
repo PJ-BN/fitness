@@ -182,7 +182,6 @@ const RoutinePage: React.FC = () => {
     loading, 
     error, 
     hasRoutines,
-    saveRoutine, 
     createNewRoutine,
     selectRoutine,
     updateDayRoutine 
@@ -194,20 +193,29 @@ const RoutinePage: React.FC = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [selectedRoutineId, setSelectedRoutineId] = useState<number | undefined>(undefined);
 
-  // Show create form if user has no routines
-  useEffect(() => {
-    if (userRoutines !== null && !hasRoutines) {
-      setShowCreateForm(true);
-    }
-  }, [userRoutines, hasRoutines]);
+  // Remove auto-show create form on reload. Only show when user clicks create.
 
   const handleCreateNew = () => {
     setShowCreateForm(true);
   };
 
   const handleCreateRoutine = async (name: string, description: string) => {
-    await createNewRoutine(name, description);
-    setShowCreateForm(false);
+    try {
+      console.log('Starting routine creation process...');
+      const success = await createNewRoutine(name, description);
+      
+      if (success) {
+        console.log('✓ All 8 API requests completed successfully');
+        // Show success message and close form
+        alert(`🎉 Routine "${name}" created successfully!`);
+        setShowCreateForm(false);
+        // The user will manually select a routine from the list
+      }
+      // If success is false, error is already set by the hook and form stays open
+    } catch (error) {
+      console.error('Routine creation failed:', error);
+      // Error is handled by the hook, form stays open
+    }
   };
 
   const handleSelectRoutine = async (routineId: number) => {
@@ -231,22 +239,18 @@ const RoutinePage: React.FC = () => {
     exercises: RoutineExercise[],
     isRestDay: boolean
   ) => {
-    updateDayRoutine(dayOfWeek, {
-      bodyParts,
-      exercises,
-      isRestDay
-    });
-  };
-
-  const handleSaveFullRoutine = async () => {
-    if (routine) {
-      try {
-        await saveRoutine(routine);
-        alert('Routine saved successfully!');
-      } catch (error) {
-        console.error('Failed to save routine:', error);
-        alert('Failed to save routine. Please try again.');
-      }
+    console.log('--- DEBUG: handleSaveRoutine in RoutinePage.tsx ---');
+    console.log('Data received:', { dayOfWeek, bodyParts, exercises, isRestDay });
+    try {
+      await updateDayRoutine(dayOfWeek, {
+        bodyParts,
+        exercises,
+        isRestDay
+      });
+      console.log('✓ Day routine updated successfully');
+    } catch (error) {
+      console.error('Failed to update day routine:', error);
+      alert('Failed to save routine. Please try again.');
     }
   };
 
@@ -463,13 +467,6 @@ const RoutinePage: React.FC = () => {
               </button>
             ))}
           </div>
-          
-          <button 
-            className={styles.saveRoutineButton}
-            onClick={handleSaveFullRoutine}
-          >
-            💾 Save Complete Routine
-          </button>
         </div>
 
         <div className={styles.routineCalendar}>

@@ -154,5 +154,16 @@ namespace Fitness.Controllers
             }
             return NoContent();
         }
+
+        [HttpGet("by-weekly-routine/{weeklyRoutineId}")]
+        public async Task<IActionResult> GetByWeeklyRoutineId(int weeklyRoutineId)
+        {
+            var response = await _dayRoutineService.GetByWeeklyRoutineIdAsync(weeklyRoutineId);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
     }
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './CreateRoutineForm.module.css';
+import styles from './CreateRoutineForm.module.css';
 
 interface CreateRoutineFormProps {
   onSubmit: (name: string, description: string) => Promise<void>;
@@ -39,55 +39,69 @@ const CreateRoutineForm: React.FC<CreateRoutineFormProps> = ({ onSubmit, loading
   };
 
   return (
-    <div className="create-routine-container">
-      <div className="create-routine-header">
+    <div className={styles.createRoutineContainer}>
+      <div className={styles.createRoutineHeader}>
         <h2>Create Your First Routine</h2>
         <p>Start building your personalized workout routine</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="create-routine-form">
-        <div className="form-group">
+      <form onSubmit={handleSubmit} className={styles.createRoutineForm}>
+        <div className={styles.formGroup}>
           <label htmlFor="routine-name">
-            Routine Name <span className="required">*</span>
+            Routine Name <span className={styles.required}>*</span>
           </label>
           <input
             id="routine-name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g., Push Pull Legs, Full Body Workout"
+            placeholder="e.g., Push Pull Legs, Full Body Workout, Morning Strength"
             disabled={loading}
             maxLength={100}
+            autoComplete="off"
           />
+          <small className={styles.charCount}>
+            {name.length}/100 characters
+          </small>
         </div>
 
-        <div className="form-group">
+        <div className={styles.formGroup}>
           <label htmlFor="routine-description">
-            Description
+            Description <span className={styles.optional}>(Optional)</span>
           </label>
           <textarea
             id="routine-description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Describe your workout routine goals and approach"
+            placeholder="Describe your workout routine goals, target muscle groups, and approach..."
             disabled={loading}
             rows={4}
             maxLength={500}
           />
+          <small className={styles.charCount}>
+            {description.length}/500 characters
+          </small>
         </div>
 
         {(formError || error) && (
-          <div className="error-message">
+          <div className={styles.errorMessage}>
             {formError || error}
           </div>
         )}
 
         <button 
           type="submit" 
-          className="create-routine-btn"
+          className={styles.createRoutineBtn}
           disabled={loading || !name.trim()}
         >
-          {loading ? 'Creating...' : 'Create Routine'}
+          {loading ? (
+            <>
+              <span className={styles.loadingSpinner}></span>
+              {' Creating Your Routine...'}
+            </>
+          ) : (
+            'Create My Routine'
+          )}
         </button>
       </form>
     </div>
