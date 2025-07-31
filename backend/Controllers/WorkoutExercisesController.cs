@@ -1,5 +1,4 @@
 using Fitness.Models;
-using Fitness.Models.DTOs;
 using Fitness.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -40,53 +39,6 @@ namespace Fitness.Controllers
         {
             var workoutExercises = await _workoutExerciseService.GetWorkoutExercisesByWorkoutIdAsync(workoutId);
             return Ok(ApiResponse<IEnumerable<WorkoutExercise>>.SuccessResponse(workoutExercises));
-        }
-
-        // POST: api/WorkoutExercises
-        [HttpPost]
-        public async Task<ActionResult<ApiResponse<WorkoutExercise>>> PostWorkoutExercise(WorkoutExerciseDto workoutExerciseDto)
-        {
-            var workoutExercise = new WorkoutExercise
-            {
-                WorkoutId = workoutExerciseDto.WorkoutId,
-                ExerciseId = workoutExerciseDto.ExerciseId,
-                Sets = workoutExerciseDto.Sets,
-                Reps = workoutExerciseDto.Reps,
-                Weight = workoutExerciseDto.Weight,
-                Duration = workoutExerciseDto.Duration,
-                Notes = workoutExerciseDto.Notes
-            };
-
-            var createdWorkoutExercise = await _workoutExerciseService.CreateWorkoutExerciseAsync(workoutExercise);
-            return CreatedAtAction(nameof(GetWorkoutExercise), new { id = createdWorkoutExercise.Id }, ApiResponse<WorkoutExercise>.SuccessResponse(createdWorkoutExercise, "Workout exercise created successfully."));
-        }
-
-        // PUT: api/WorkoutExercises/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutWorkoutExercise(int id, WorkoutExercise workoutExercise)
-        {
-            if (id != workoutExercise.Id)
-            {
-                return BadRequest(ApiResponse.ErrorResponse("Workout exercise ID mismatch."));
-            }
-
-            var existingWorkoutExercise = await _workoutExerciseService.GetWorkoutExerciseByIdAsync(id);
-            if (existingWorkoutExercise == null)
-            {
-                return NotFound(ApiResponse.ErrorResponse("Workout exercise not found."));
-            }
-
-            existingWorkoutExercise.WorkoutId = workoutExercise.WorkoutId;
-            existingWorkoutExercise.ExerciseId = workoutExercise.ExerciseId;
-            existingWorkoutExercise.Sets = workoutExercise.Sets;
-            existingWorkoutExercise.Reps = workoutExercise.Reps;
-            existingWorkoutExercise.Weight = workoutExercise.Weight;
-            existingWorkoutExercise.Duration = workoutExercise.Duration;
-            existingWorkoutExercise.Notes = workoutExercise.Notes;
-
-            await _workoutExerciseService.UpdateWorkoutExerciseAsync(existingWorkoutExercise);
-
-            return NoContent();
         }
 
         // DELETE: api/WorkoutExercises/5

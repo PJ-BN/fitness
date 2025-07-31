@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Fitness.Controllers
 {
@@ -104,6 +105,23 @@ namespace Fitness.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpPost("log-from-routine")]
+        public async Task<IActionResult> LogWorkoutFromRoutine([FromBody] LogWorkoutFromRoutineDto logWorkoutFromRoutineDto)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var response = await _workoutService.LogWorkoutFromRoutineAsync(userId, logWorkoutFromRoutineDto);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
         }
     }
 }

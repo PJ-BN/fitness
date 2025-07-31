@@ -27,20 +27,6 @@ namespace Fitness.Services
             return await _context.WorkoutExercises.Where(we => we.WorkoutId == workoutId).ToListAsync();
         }
 
-        public async Task<WorkoutExercise> CreateWorkoutExerciseAsync(WorkoutExercise workoutExercise)
-        {
-            _context.WorkoutExercises.Add(workoutExercise);
-            await _context.SaveChangesAsync();
-            return workoutExercise;
-        }
-
-        public async Task<WorkoutExercise> UpdateWorkoutExerciseAsync(WorkoutExercise workoutExercise)
-        {
-            _context.Entry(workoutExercise).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return workoutExercise;
-        }
-
         public async Task<bool> DeleteWorkoutExerciseAsync(int id)
         {
             var workoutExercise = await _context.WorkoutExercises.FindAsync(id);

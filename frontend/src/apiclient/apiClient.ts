@@ -4,8 +4,6 @@ import Cookies from 'js-cookie';
 const API_BASE_URL = 'https://localhost:7071'; // Replace with your backend API base URL
 
 async function request<T>(method: string, endpoint: string, body?: any): Promise<ApiResponseWithData<T> | ApiResponse> {
-  console.log('--- DEBUG: request in apiClient.ts ---');
-  console.log('Request details:', { method, endpoint, body });
   try {
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -134,7 +132,7 @@ const apiClient = {
     // Body parts operations
     getBodyParts: (dayId: string) => apiClient.get<any[]>(`api/DayRoutines/${dayId}/bodyparts`),
     addBodyPart: (dayId: string, bodyPartData: any) => apiClient.post<any>(`api/DayRoutines/${dayId}/bodyparts`, bodyPartData),
-    removeBodyPart: (dayId: string) => apiClient.delete<any>(`api/DayRoutines/${dayId}/bodyparts`),
+    removeBodyPart: (dayId: string, bodyPartData: any) => apiClient.delete<any>(`api/DayRoutines/${dayId}/bodyparts`, bodyPartData),
     
     // Exercises operations
     getExercises: (dayId: string) => apiClient.get<any[]>(`api/DayRoutines/${dayId}/exercises`),

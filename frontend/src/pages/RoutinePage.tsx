@@ -239,8 +239,6 @@ const RoutinePage: React.FC = () => {
     exercises: RoutineExercise[],
     isRestDay: boolean
   ) => {
-    console.log('--- DEBUG: handleSaveRoutine in RoutinePage.tsx ---');
-    console.log('Data received:', { dayOfWeek, bodyParts, exercises, isRestDay });
     try {
       await updateDayRoutine(dayOfWeek, {
         bodyParts,
@@ -425,10 +423,8 @@ const RoutinePage: React.FC = () => {
                 className={`${styles.dayCard} ${
                   dayRoutine.isRestDay ? styles.restDayCard : ''
                 } ${dayRoutine.exercises.length > 0 ? styles.selected : ''}`}
-                onClick={() => !dayRoutine.isRestDay && handleDayClick(dayRoutine)}
-                disabled={dayRoutine.isRestDay}
+                onClick={() => handleDayClick(dayRoutine)}
                 type="button"
-                aria-disabled={dayRoutine.isRestDay}
               >
                 <div className={styles.dayHeader}>
                   <h3 className={styles.dayName}>{dayRoutine.dayName}</h3>
@@ -446,8 +442,8 @@ const RoutinePage: React.FC = () => {
                             {bodyPart}
                             <span className={styles.exerciseCount}>
                               {dayRoutine.exercises.filter((ex: any) => 
-                                ex.exercise.muscleGroups.toLowerCase().includes(bodyPart.toLowerCase()) ||
-                                ex.exercise.category.toLowerCase().includes(bodyPart.toLowerCase())
+                                ex.exercise && (ex.exercise.muscleGroups.toLowerCase().includes(bodyPart.toLowerCase()) ||
+                                ex.exercise.category.toLowerCase().includes(bodyPart.toLowerCase()))
                               ).length}
                             </span>
                           </span>
@@ -458,7 +454,7 @@ const RoutinePage: React.FC = () => {
                     <div className={styles.exercisesList}>
                       {dayRoutine.exercises.map((routineEx: any) => (
                         <div key={routineEx.exerciseId} className={styles.exerciseItem}>
-                          {routineEx.exercise.name} ({routineEx.sets}x{routineEx.reps})
+                          {routineEx.exercise ? `${routineEx.exercise.name} (${routineEx.sets}x${routineEx.reps})` : 'Loading exercise...'}
                         </div>
                       ))}
                     </div>

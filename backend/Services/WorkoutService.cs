@@ -1,5 +1,6 @@
 using Fitness.Data;
 using Fitness.Models;
+using Fitness.Models.DTOs;
 using Fitness.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -57,6 +58,50 @@ namespace Fitness.Services
             _context.Workouts.Remove(workout);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<ApiResponse<Workout>> LogWorkoutFromRoutineAsync(string userId, LogWorkoutFromRoutineDto logWorkoutFromRoutineDto)
+        {
+            var workout = new Workout
+            {
+                UserId = userId,
+                Date = logWorkoutFromRoutineDto.Date,
+                Notes = logWorkoutFromRoutineDto.Notes
+            };
+
+            _context.Workouts.Add(workout);
+            await _context.SaveChangesAsync();
+
+            foreach (var completedExerciseDto in logWorkoutFromRoutineDto.CompletedExercises)
+            {
+                var workoutExercise = new WorkoutExercise
+                {
+                    WorkoutId = workout.Id,
+                    ExerciseId = completedExerciseDto.ExerciseId,
+                    Notes = completedExerciseDto.Notes
+                };
+
+                _context.WorkoutExercises.Add(workoutExercise);
+                await _context.SaveChangesAsync();
+
+                foreach (var workoutSetDto in completedExerciseDto.Sets)
+                {
+                    var workoutSet = new WorkoutSet
+                    {
+                        WorkoutExerciseId = workoutExercise.Id,
+                        SetNumber = workoutSetDto.SetNumber,
+                        Reps = workoutSetDto.Reps,
+                        Weight = workoutSetDto.Weight,
+                        Duration = workoutSetDto.Duration,
+                        Notes = workoutSetDto.Notes
+                    };
+                    _context.WorkoutSets.Add(workoutSet);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return ApiResponse<Workout>.SuccessResponse(workout, "Workout logged successfully.");
         }
     }
 }

@@ -19,7 +19,7 @@ interface UseRoutineResult {
 }
 
 // Helper function to load day routine details (body parts and exercises)
-const loadDayRoutineDetails = async (dayRoutine: any, dayInfo: { id: number; name: string }) => {
+const loadDayRoutineDetails = async (dayRoutine: any, dayInfo: { id: number; name: string }, allExercises: any[]) => {
   try {
     const [bodyPartsResponse, exercisesResponse] = await Promise.all([
       apiClient.dayRoutines.getBodyParts(String(dayRoutine.id)),
@@ -30,17 +30,15 @@ const loadDayRoutineDetails = async (dayRoutine: any, dayInfo: { id: number; nam
       ? bodyPartsResponse.data.map((bp: any) => typeof bp === 'string' ? bp : bp.bodyPart)
       : [];
     
-    const exercises = (exercisesResponse.success && 'data' in exercisesResponse && exercisesResponse.data)
-      ? exercisesResponse.data.map((ex: any) => ({
-          exerciseId: ex.exerciseId,
-          exercise: ex.exercise,
-          sets: ex.sets,
-          reps: ex.reps,
-          duration: ex.duration,
-          weight: ex.weight,
-          notes: ex.notes
-        }))
-      : [];
+    const dayExercises = (exercisesResponse.success && 'data' in exercisesResponse && exercisesResponse.data) ? exercisesResponse.data : [];
+    
+    const exercises = dayExercises.map((ex: any) => {
+      const fullExercise = allExercises.find(e => e.id === ex.exerciseId);
+      return {
+        ...ex,
+        exercise: fullExercise || null,
+      };
+    });
 
     return {
       dayOfWeek: dayInfo.id,
@@ -93,100 +91,84 @@ const saveDayRoutineDetails = async (dayRoutineId: string, dayRoutine: LegacyDay
   }
 };
 
-// Helper function to update day routine via API
 const updateDayRoutineViaAPI = async (
   routineId: string, 
   dayOfWeek: number, 
   dayToUpdate: LegacyDayRoutine,
   dayRoutineUpdate: Partial<LegacyDayRoutine>
 ) => {
-  console.log('updateDayRoutineViaAPI called with:', { routineId, dayOfWeek, dayToUpdate, dayRoutineUpdate });
   
-  // First, get the day routine ID by fetching day routines for this weekly routine
-  const dayRoutinesResponse = await apiClient.weeklyRoutines.getDayRoutines(routineId);
-  
+  // Get the day routine ID
+  const dayRoutinesResponse = await apiClient.dayRoutines.getByWeeklyRoutine(routineId);
   if (!dayRoutinesResponse.success || !('data' in dayRoutinesResponse) || !dayRoutinesResponse.data) {
     throw new Error('Failed to get day routines');
   }
-
-  // Find the specific day routine
   const dayRoutine = dayRoutinesResponse.data.find((dr: any) => dr.dayOfWeek === dayOfWeek);
   if (!dayRoutine) {
     throw new Error(`Day routine not found for day ${dayOfWeek}`);
   }
-
   const dayRoutineId = dayRoutine.id;
-  console.log('Found day routine ID:', dayRoutineId);
 
-  // Update the basic day routine info first (if needed)
-  const dayResponse = await apiClient.weeklyRoutines.updateDayRoutine(
-    routineId,
-    dayOfWeek,
-    {
-      weeklyRoutineId: Number(routineId),
-      dayOfWeek: dayToUpdate.dayOfWeek,
-      dayName: dayToUpdate.dayName,
-      isRestDay: dayToUpdate.isRestDay
+  // Handle Body Part Updates
+  if (dayRoutineUpdate.bodyParts) {
+    
+    // 1. Fetch existing body parts
+    const existingBodyPartsResponse = await apiClient.dayRoutines.getBodyParts(String(dayRoutineId));
+    if (!existingBodyPartsResponse.success || !('data' in existingBodyPartsResponse)) {
+      throw new Error('Failed to fetch existing body parts.');
     }
-  );
+    const existingBodyParts = existingBodyPartsResponse.data.map((bp: any) => bp.bodyPart);
 
-  if (!dayResponse.success) {
-    throw new Error('Failed to update day routine basic info');
-  }
+    // 2. Determine which body parts to add and remove
+    const newBodyParts = dayToUpdate.bodyParts;
+    const partsToAdd = newBodyParts.filter(part => !existingBodyParts.includes(part));
+    const partsToRemove = existingBodyParts.filter(part => !newBodyParts.includes(part));
 
-  console.log('✓ Updated basic day routine info');
+    // 3. Add new body parts
+    for (const bodyPart of partsToAdd) {
+      const payload = { dayRoutineId: dayRoutineId, bodyPart: bodyPart };
+      await apiClient.dayRoutines.addBodyPart(String(dayRoutineId), payload);
+    }
 
-  // Clear existing body parts and exercises before adding new ones
-  if (dayRoutineUpdate.bodyParts || dayRoutineUpdate.exercises) {
-    console.log('Clearing existing body parts and exercises...');
-    try {
-      if (dayRoutineUpdate.bodyParts) {
-        await apiClient.dayRoutineBodyParts.deleteByDayRoutine(String(dayRoutineId));
-        console.log('✓ Cleared existing body parts');
-      }
-      if (dayRoutineUpdate.exercises) {
-        await apiClient.dayRoutineExercises.deleteByDayRoutine(String(dayRoutineId));
-        console.log('✓ Cleared existing exercises');
-      }
-    } catch (clearErr) {
-      console.warn('Failed to clear existing data (might not exist):', clearErr);
+    // 4. Remove old body parts
+    for (const bodyPart of partsToRemove) {
+      const payload = { dayRoutineId: dayRoutineId, bodyPart: bodyPart };
+      // Note: The API seems to expect the body part in the body of the DELETE request
+      await apiClient.dayRoutines.removeBodyPart(String(dayRoutineId), payload);
     }
   }
 
-  // Add new body parts
-  if (dayRoutineUpdate.bodyParts && dayToUpdate.bodyParts.length > 0) {
-    console.log('Adding new body parts:', dayToUpdate.bodyParts);
-    for (const bodyPart of dayToUpdate.bodyParts) {
-      try {
-        await apiClient.dayRoutineBodyParts.create({
-          dayRoutineId: dayRoutineId,
-          bodyPart: bodyPart
-        });
-        console.log(`✓ Added body part: ${bodyPart}`);
-      } catch (bpErr) {
-        console.warn(`Failed to add body part ${bodyPart}:`, bpErr);
-      }
+  // Handle Exercise Updates (if any)
+  if (dayRoutineUpdate.exercises) {
+    // 1. Fetch existing exercises
+    const existingExercisesResponse = await apiClient.dayRoutines.getExercises(String(dayRoutineId));
+    if (!existingExercisesResponse.success || !('data' in existingExercisesResponse)) {
+      throw new Error('Failed to fetch existing exercises.');
     }
-  }
+    const existingExercises = existingExercisesResponse.data.map((ex: any) => ex.exerciseId);
 
-  // Add new exercises
-  if (dayRoutineUpdate.exercises && dayToUpdate.exercises.length > 0) {
-    console.log('Adding new exercises:', dayToUpdate.exercises);
-    for (const exercise of dayToUpdate.exercises) {
-      try {
-        await apiClient.dayRoutineExercises.create({
-          dayRoutineId: dayRoutineId,
-          exerciseId: exercise.exerciseId,
-          sets: exercise.sets || 3,
-          reps: exercise.reps || 10,
-          duration: exercise.duration || 0,
-          weight: exercise.weight || 0,
-          notes: exercise.notes || ""
-        });
-        console.log(`✓ Added exercise: ${exercise.exercise?.name}`);
-      } catch (exErr) {
-        console.warn(`Failed to add exercise ${exercise.exercise?.name}:`, exErr);
-      }
+    // 2. Determine which exercises to add and remove
+    const newExercises = dayToUpdate.exercises.map(ex => ex.exerciseId);
+    const exercisesToAdd = dayToUpdate.exercises.filter(ex => !existingExercises.includes(ex.exerciseId));
+    const exercisesToRemove = existingExercisesResponse.data.filter((ex: any) => !newExercises.includes(ex.exerciseId));
+
+    // 3. Add new exercises
+    for (const exercise of exercisesToAdd) {
+      const payload = {
+        dayRoutineId: dayRoutineId,
+        exerciseId: exercise.exerciseId,
+        sets: exercise.sets || 3,
+        reps: exercise.reps || 10,
+        duration: exercise.duration || 0,
+        weight: exercise.weight || 0,
+        notes: exercise.notes || ""
+      };
+      await apiClient.dayRoutines.addExercise(String(dayRoutineId), payload);
+    }
+
+    // 4. Remove old exercises
+    for (const exercise of exercisesToRemove) {
+      await apiClient.dayRoutines.removeExercise(String(dayRoutineId), String(exercise.id));
     }
   }
 };
@@ -336,57 +318,51 @@ const useRoutine = (): UseRoutineResult => {
     setError(null);
     
     try {
-      console.log('Attempting to select routine with ID:', routineId);
-      console.log('Available routines:', userRoutines?.map(r => ({ id: r.id, name: r.name })));
-      
-      // Find the routine in userRoutines to get its details
+      // Fetch all exercises to cross-reference names and details
+      const allExercisesResponse = await apiClient.exercises.getAll();
+      if (!allExercisesResponse.success || !('data' in allExercisesResponse)) {
+        throw new Error('Failed to fetch the master list of exercises.');
+      }
+      const allExercises = allExercisesResponse.data;
+
       let selectedRoutine = userRoutines?.find(r => r.id === routineId);
       
-      // If not found, try reloading once more
       if (!selectedRoutine) {
-        console.log('Routine not found, attempting one more reload...');
         await loadUserRoutines();
         await new Promise(resolve => setTimeout(resolve, 100));
         selectedRoutine = userRoutines?.find(r => r.id === routineId);
       }
       
       if (!selectedRoutine) {
-        console.error('Routine not found in userRoutines. Available routines:', userRoutines);
         throw new Error(`Routine with ID ${routineId} not found`);
       }
 
-      console.log('Found routine:', selectedRoutine.name);
-
-      // First, call the DayRoutines/by-weekly-routine endpoint to get day routine data
       const dayRoutinesResponse = await apiClient.dayRoutines.getByWeeklyRoutine(String(routineId));
       
       if (dayRoutinesResponse.success && 'data' in dayRoutinesResponse && dayRoutinesResponse.data && dayRoutinesResponse.data.length > 0) {
         const dayRoutines = dayRoutinesResponse.data;
         
-        // Transform API data to match our LegacyWeeklyRoutine interface
         const routineWithDays: LegacyWeeklyRoutine = {
           ...selectedRoutine,
           id: String(selectedRoutine.id),
           routines: await Promise.all(DAYS_OF_WEEK.map(async day => {
             const dayRoutine = dayRoutines.find((dr: any) => dr.dayOfWeek === day.id);
             if (dayRoutine) {
-              return await loadDayRoutineDetails(dayRoutine, day);
+              return await loadDayRoutineDetails(dayRoutine, day, allExercises);
             } else {
               return {
                 dayOfWeek: day.id,
                 dayName: day.name,
                 bodyParts: [],
                 exercises: [],
-                isRestDay: day.id === 6 // Saturday default rest day
+                isRestDay: day.id === 6
               };
             }
           }))
         };
         
         setRoutine(routineWithDays);
-        setError(null);
       } else {
-        // No day routines found, create default structure
         const routineWithDefaultDays: LegacyWeeklyRoutine = {
           ...selectedRoutine,
           id: String(selectedRoutine.id),
@@ -395,14 +371,12 @@ const useRoutine = (): UseRoutineResult => {
             dayName: day.name,
             bodyParts: [],
             exercises: [],
-            isRestDay: day.id === 6 // Saturday default rest day
+            isRestDay: day.id === 6
           }))
         };
         setRoutine(routineWithDefaultDays);
-        setError(null);
       }
     } catch (err: any) {
-      console.error('Failed to load routine:', err.message);
       setError(err.message || 'Failed to load routine');
       throw err;
     } finally {
@@ -476,84 +450,55 @@ const useRoutine = (): UseRoutineResult => {
   };
 
   const updateDayRoutine = async (dayOfWeek: number, dayRoutineUpdate: Partial<LegacyDayRoutine>): Promise<void> => {
-    console.log('--- DEBUG: updateDayRoutine in useRoutine.ts ---');
-    console.log('Data received:', { dayOfWeek, dayRoutineUpdate });
-    if (!routine) return;
+    if (!routine?.id) return;
 
     const originalRoutine = routine;
 
-    // If user sets isRestDay true, ensure only one rest day in the week
-    let updatedRoutines = routine.routines.map((dayRoutine: LegacyDayRoutine) => {
-      if (dayRoutine.dayOfWeek === dayOfWeek) {
-        return {
-          ...dayRoutine,
-          ...dayRoutineUpdate
-        };
+    // Optimistically update the UI
+    const updatedRoutines = originalRoutine.routines.map(day => {
+      if (day.dayOfWeek === dayOfWeek) {
+        return { ...day, ...dayRoutineUpdate };
       }
-      return dayRoutine;
+      // If setting a rest day, unset other rest days
+      if (dayRoutineUpdate.isRestDay === true) {
+        return { ...day, isRestDay: false };
+      }
+      return day;
     });
 
-    if (dayRoutineUpdate.isRestDay) {
-      // Set all other days to isRestDay: false
-      updatedRoutines = updatedRoutines.map((dr: LegacyDayRoutine) =>
-        dr.dayOfWeek !== dayOfWeek ? { ...dr, isRestDay: false } : dr
-      );
-    }
+    setRoutine({ ...originalRoutine, routines: updatedRoutines });
 
-    const updatedRoutine: LegacyWeeklyRoutine = {
-      ...routine,
-      routines: updatedRoutines
-    };
-
-    setRoutine(updatedRoutine);
-    
-    // Auto-save the routine after updating
     try {
-      if (routine.id && userId && isAuthenticated) {
-        const dayToUpdate = updatedRoutines.find((dr: LegacyDayRoutine) => dr.dayOfWeek === dayOfWeek);
-        if (dayToUpdate) {
-          if (dayRoutineUpdate.isRestDay !== undefined) {
-            // For rest day updates, call the DayRoutines API directly
-            console.log('--- DEBUG: Preparing to call API for rest day update ---');
-            const dayRoutinesResponse = await apiClient.dayRoutines.getByWeeklyRoutine(routine.id);
-            
-            console.log('--- DEBUG: Response from getByWeeklyRoutine:', dayRoutinesResponse);
-
-            if (dayRoutinesResponse.success && 'data' in dayRoutinesResponse && dayRoutinesResponse.data) {
-              const dayRoutineData = dayRoutinesResponse.data.find((dr: any) => dr.dayOfWeek === dayOfWeek);
-              
-              if (dayRoutineData) {
-                const updateData = {
-                  weeklyRoutineId: Number(routine.id),
-                  dayOfWeek: dayToUpdate.dayOfWeek,
-                  dayName: dayToUpdate.dayName,
-                  isRestDay: dayToUpdate.isRestDay
-                };
-                console.log('--- DEBUG: Calling apiClient.dayRoutines.update with:', { id: dayRoutineData.id, data: updateData });
-                await apiClient.dayRoutines.update(String(dayRoutineData.id), updateData);
-                console.log(`✓ Updated rest day status for ${dayToUpdate.dayName} to ${dayToUpdate.isRestDay}`);
-              } else {
-                console.error('--- DEBUG: Did not find matching dayRoutineData for dayOfWeek:', dayOfWeek);
-              }
-            } else {
-              console.error('--- DEBUG: Failed to get day routines or response data is empty. Response:', dayRoutinesResponse);
-            }
-          } else {
-            // For body parts and exercises updates, use the existing API
-            console.log('Updating day routine via API for bodyParts/exercises...');
-            await updateDayRoutineViaAPI(routine.id, dayOfWeek, dayToUpdate, dayRoutineUpdate);
-            console.log('✓ Day routine updated successfully via API');
-          }
-        }
-      } else {
-        // If no routine ID, save the entire routine
-        await saveRoutine(updatedRoutine);
+      const dayToUpdate = updatedRoutines.find(dr => dr.dayOfWeek === dayOfWeek);
+      if (!dayToUpdate) {
+        throw new Error('Could not find the day to update locally.');
       }
+
+      // Independently handle rest day updates
+      if (dayRoutineUpdate.isRestDay !== undefined) {
+        const payload = {
+          weeklyRoutineId: Number(originalRoutine.id),
+          dayOfWeek: dayToUpdate.dayOfWeek,
+          dayName: dayToUpdate.dayName,
+          isRestDay: dayToUpdate.isRestDay,
+        };
+        await apiClient.weeklyRoutines.updateDayRoutine(originalRoutine.id, dayOfWeek, payload);
+      }
+
+      // Independently handle body part and exercise updates
+      if (dayRoutineUpdate.bodyParts || dayRoutineUpdate.exercises) {
+        await updateDayRoutineViaAPI(originalRoutine.id, dayOfWeek, dayToUpdate, dayRoutineUpdate);
+      }
+
+      // After all updates, refresh the entire routine from the server
+      await selectRoutine(Number(originalRoutine.id));
+
     } catch (err) {
-      console.error('Failed to auto-save routine:', err);
-      // Revert the local state if API call fails
+      console.error('Failed to save and refresh routine:', err);
+      // Revert to the original state if the API call fails
       setRoutine(originalRoutine);
-      throw err;
+      // Notify the user
+      alert('Failed to save routine. Please try again.');
     }
   };
 

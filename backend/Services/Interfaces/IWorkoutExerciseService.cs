@@ -8,8 +8,6 @@ namespace Fitness.Services.Interfaces
     {
         Task<WorkoutExercise> GetWorkoutExerciseByIdAsync(int id);
         Task<IEnumerable<WorkoutExercise>> GetWorkoutExercisesByWorkoutIdAsync(int workoutId);
-        Task<WorkoutExercise> CreateWorkoutExerciseAsync(WorkoutExercise workoutExercise);
-        Task<WorkoutExercise> UpdateWorkoutExerciseAsync(WorkoutExercise workoutExercise);
         Task<bool> DeleteWorkoutExerciseAsync(int id);
     }
 }
