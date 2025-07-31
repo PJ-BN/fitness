@@ -32,6 +32,10 @@ builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 builder.Services.AddScoped<IWorkoutExerciseService, WorkoutExerciseService>();
 builder.Services.AddScoped<IGoalService, GoalService>();
 builder.Services.AddScoped<IUserMetricService, UserMetricService>();
+builder.Services.AddScoped<IWeeklyRoutineService, WeeklyRoutineService>();
+builder.Services.AddScoped<IDayRoutineService, DayRoutineService>();
+builder.Services.AddScoped<IDayRoutineBodyPartService, DayRoutineBodyPartService>();
+builder.Services.AddScoped<IDayRoutineExerciseService, DayRoutineExerciseService>();
 
 // Configure Identity
 builder.Services.AddIdentity<User, IdentityRole>()

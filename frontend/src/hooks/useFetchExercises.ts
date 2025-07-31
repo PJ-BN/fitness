@@ -29,7 +29,7 @@ const useFetchExercises = (): FetchExercisesResult => {
       setLoading(true);
       setError(null);
       try {
-        const response = await apiClient.get<Exercise[]>('api/exercises');
+        const response = await apiClient.exercises.getAll();
         if (response.success && 'data' in response && response.data) {
           setExercises(response.data);
         } else {

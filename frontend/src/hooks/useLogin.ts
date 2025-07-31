@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../apiclient/apiClient';
-import type { ApiResponseWithData } from '../types/api';
+import type { User } from '../types/user';
 import Cookies from 'js-cookie';
 
 interface LoginData {
@@ -27,18 +27,32 @@ const useLogin = (): LoginResult => {
     setError(null);
     setSuccess(false);
     try {
-      const response = await apiClient.post<ApiResponseWithData<{ token: string }>>('api/Auth/login', data);
-      if (response.success) {
-        const dataResponse = response as ApiResponseWithData<{ token: string }>;
-        if (dataResponse.data && dataResponse.data.token) {
-          Cookies.set('token', dataResponse.data.token, { expires: 7 }); // Store token for 7 days
-          setSuccess(true);
-          navigate('/dashboard'); // Redirect to dashboard on successful login
-        } else {
-          setError(response.message || 'Login failed: No token received');
+      // Step 1: Login and get token
+      const loginResponse = await apiClient.auth.login(data);
+      if (loginResponse.success && 'data' in loginResponse && loginResponse.data?.token) {
+        const token = loginResponse.data.token;
+        Cookies.set('token', token, { expires: 7 }); // Store token for 7 days
+        
+        // Step 2: Get user data using the token
+        try {
+          const userResponse = await apiClient.get<User>('api/Auth/me');
+          if (userResponse.success && 'data' in userResponse && userResponse.data) {
+            // Save user ID in cookie for easy access
+            Cookies.set('userId', userResponse.data.id, { expires: 7 });
+            setSuccess(true);
+            navigate('/dashboard'); // Redirect to dashboard on successful login
+          } else {
+            setError('Failed to fetch user data after login');
+            // Clear the token since we couldn't get user data
+            Cookies.remove('token');
+          }
+        } catch (userErr: any) {
+          setError('Failed to fetch user data after login');
+          // Clear the token since we couldn't get user data
+          Cookies.remove('token');
         }
       } else {
-        setError(response.message || 'Login failed');
+        setError(loginResponse.message || 'Login failed: No token received');
       }
     } catch (err: any) {
       setError(err.message || 'An unexpected error occurred');

@@ -15,6 +15,10 @@ namespace Fitness.Data
         public DbSet<WorkoutExercise> WorkoutExercises { get; set; }
         public DbSet<Goal> Goals { get; set; }
         public DbSet<UserMetric> UserMetrics { get; set; }
+        public DbSet<WeeklyRoutine> WeeklyRoutines { get; set; }
+        public DbSet<DayRoutine> DayRoutines { get; set; }
+        public DbSet<DayRoutineBodyPart> DayRoutineBodyParts { get; set; }
+        public DbSet<DayRoutineExercise> DayRoutineExercises { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

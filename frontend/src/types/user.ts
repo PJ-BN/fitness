@@ -17,6 +17,13 @@ export interface User {
   accessFailedCount: number;
 }
 
+export interface AuthMeResponse {
+  success: boolean;
+  message: string;
+  data: User;
+  errors: string[];
+}
+
 export interface UserProfileUpdate {
   name: string;
   phoneNumber: string;

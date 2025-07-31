@@ -213,7 +213,8 @@ namespace Fitness.Controllers
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
+                new Claim("user_id", user.Id), // Custom claim for user ID
+                new Claim(ClaimTypes.NameIdentifier, user.Id) // Keep this for compatibility
             };
 
             var userRoles = _userManager.GetRolesAsync(user).Result;

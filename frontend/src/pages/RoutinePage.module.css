@@ -1,0 +1,657 @@
+:root {
+  --primary-color: #4CAF50;
+  --secondary-color: #607D8B;
+  --accent-color: #FF9800;
+  --text-color-dark: #333;
+  --text-color-light: #555;
+  --background-light: #f9f9f9;
+  --card-background: #ffffff;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(0, 0, 0, 0.03);
+  --hover-shadow-color: rgba(0, 0, 0, 0.1);
+  --success-color: #4CAF50;
+  --danger-color: #f44336;
+  --warning-color: #ff9800;
+  --rest-day-color: #9C27B0;
+}
+
+.routinePageContainer {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-light);
+  min-height: 100vh;
+}
+
+.pageHeader {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 30px 0;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-radius: 15px;
+  color: white;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.pageTitle {
+  font-size: 3em;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.pageSubtitle {
+  font-size: 1.2em;
+  opacity: 0.9;
+  font-weight: 300;
+}
+
+.routineContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.routineBuilder {
+  background: var(--card-background);
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 5px 20px var(--shadow-color);
+  border: 1px solid var(--border-color);
+}
+
+.sectionTitle {
+  font-size: 1.8em;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sectionTitle::before {
+  content: '';
+  width: 4px;
+  height: 30px;
+  background: var(--primary-color);
+  border-radius: 2px;
+}
+
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.dayCard {
+  background: var(--card-background);
+  border-radius: 12px;
+  padding: 20px;
+  border: 2px solid var(--border-color);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.dayCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px var(--hover-shadow-color);
+  border-color: var(--primary-color);
+}
+
+.dayCard.selected {
+  border-color: var(--primary-color);
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(76, 175, 80, 0.1));
+}
+
+.dayCard.restDay {
+  border-color: var(--rest-day-color);
+  background: linear-gradient(135deg, rgba(156, 39, 176, 0.05), rgba(156, 39, 176, 0.1));
+}
+
+.dayHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.dayName {
+  font-size: 1.3em;
+  font-weight: 600;
+  color: var(--text-color-dark);
+}
+
+.restDayBadge {
+  background: var(--rest-day-color);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  font-weight: 500;
+}
+
+.bodyPartsSection {
+  margin-bottom: 15px;
+}
+
+.bodyPartsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.bodyPartChip {
+  background: var(--primary-color);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+
+.bodyPartChip:hover {
+  background: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+.exerciseCount {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.75em;
+}
+
+.exercisesList {
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.exerciseItem {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.9em;
+  color: var(--text-color-light);
+}
+
+.exerciseItem:last-child {
+  border-bottom: none;
+}
+
+.routineCalendar {
+  background: var(--card-background);
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 5px 20px var(--shadow-color);
+  border: 1px solid var(--border-color);
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.calendarNav {
+  display: flex;
+  gap: 10px;
+}
+
+.navButton {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.navButton:hover {
+  background: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+.currentMonth {
+  font-size: 1.5em;
+  font-weight: 600;
+  color: var(--text-color-dark);
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 20px;
+}
+
+.calendarDayHeader {
+  padding: 15px 10px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-color-dark);
+  background: var(--background-light);
+  border-radius: 8px;
+  font-size: 0.9em;
+}
+
+.calendarDay {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.calendarDay:hover {
+  background: var(--background-light);
+  transform: scale(1.02);
+}
+
+.calendarDay.today {
+  background: var(--primary-color);
+  color: white;
+  font-weight: 700;
+}
+
+.calendarDay.hasRoutine {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.2));
+  border-color: var(--primary-color);
+}
+
+.calendarDay.restDay {
+  background: linear-gradient(135deg, rgba(156, 39, 176, 0.1), rgba(156, 39, 176, 0.2));
+  border-color: var(--rest-day-color);
+}
+
+.dayNumber {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.routineIndicator {
+  width: 6px;
+  height: 6px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  margin-top: 2px;
+}
+
+.restIndicator {
+  width: 6px;
+  height: 6px;
+  background: var(--rest-day-color);
+  border-radius: 50%;
+  margin-top: 2px;
+}
+
+.routineModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modalContent {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.modalTitle {
+  font-size: 1.8em;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 2em;
+  color: var(--text-color-light);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.closeButton:hover {
+  color: var(--danger-color);
+}
+
+.bodyPartsSelector {
+  margin-bottom: 25px;
+}
+
+.selectorTitle {
+  font-size: 1.2em;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--text-color-dark);
+}
+
+.bodyPartsCheckboxGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.checkboxItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.checkboxItem:hover {
+  background: var(--background-light);
+  border-color: var(--primary-color);
+}
+
+.checkboxItem.checked {
+  background: rgba(76, 175, 80, 0.1);
+  border-color: var(--primary-color);
+}
+
+.checkboxItem input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.checkboxItem input[type="checkbox"]:checked {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.checkboxItem input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.exercisesSelector {
+  margin-bottom: 25px;
+}
+
+.exercisesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.exerciseCard {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.exerciseCard:hover {
+  box-shadow: 0 5px 15px var(--hover-shadow-color);
+  transform: translateY(-2px);
+}
+
+.exerciseCard.selected {
+  border-color: var(--primary-color);
+  background: rgba(76, 175, 80, 0.05);
+}
+
+.exerciseName {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: var(--text-color-dark);
+}
+
+.exerciseCategory {
+  font-size: 0.85em;
+  color: var(--text-color-light);
+  margin-bottom: 8px;
+}
+
+.exerciseMuscles {
+  font-size: 0.8em;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.selectedExercisesBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.modalActions {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.actionButton {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1em;
+}
+
+.primaryButton {
+  background: var(--primary-color);
+  color: white;
+}
+
+.primaryButton:hover {
+  background: var(--secondary-color);
+  transform: translateY(-1px);
+}
+
+.secondaryButton {
+  background: transparent;
+  color: var(--text-color-dark);
+  border: 2px solid var(--border-color);
+}
+
+.secondaryButton:hover {
+  background: var(--background-light);
+  border-color: var(--primary-color);
+}
+
+.saveRoutineButton {
+  background: var(--success-color);
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.saveRoutineButton:hover {
+  background: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+}
+
+.routineStats {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statNumber {
+  font-size: 2em;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.statLabel {
+  font-size: 0.9em;
+  opacity: 0.9;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-color-light);
+}
+
+.emptyStateIcon {
+  font-size: 4em;
+  margin-bottom: 20px;
+  opacity: 0.3;
+}
+
+.emptyStateText {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+}
+
+.restDayCard {
+  background: linear-gradient(135deg, rgba(156, 39, 176, 0.1), rgba(156, 39, 176, 0.2));
+  border-color: var(--rest-day-color);
+}
+
+.restDayCard .dayName {
+  color: var(--rest-day-color);
+}
+
+@media (max-width: 768px) {
+  .routineContent {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .daysGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .calendarGrid {
+    gap: 1px;
+  }
+  
+  .modalContent {
+    width: 95%;
+    padding: 20px;
+  }
+  
+  .bodyPartsCheckboxGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .exercisesGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .routineStats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .pageTitle {
+    font-size: 2em;
+  }
+  
+  .routineStats {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .calendarDayHeader {
+    padding: 10px 5px;
+    font-size: 0.8em;
+  }
+  
+  .modalActions {
+    flex-direction: column;
+  }
+}
