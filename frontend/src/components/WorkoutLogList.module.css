@@ -1,4 +1,3 @@
-
 .listContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -106,75 +105,113 @@
   background-color: #f8d7da;
   border-radius: 8px;
 }
-.listContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
   gap: 20px;
+  margin-bottom: 30px;
   padding: 20px;
+  background-color: #f0f4f8;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  justify-content: center;
+  align-items: center;
 }
 
-.logItem {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.logItem h3 {
-  color: #007bff;
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-.logItem p {
-  margin-bottom: 5px;
-  font-size: 0.95em;
-}
-
-.logItem strong {
-  color: #555;
-}
-
-.exercises {
-  margin-top: 15px;
-  border-top: 1px solid #eee;
-  padding-top: 15px;
-}
-
-.exercises h4 {
+.filterGroup label {
+  font-size: 1em;
   color: #333;
-  margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 
-.exercises ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.exercises li {
-  background-color: #e9ecef;
-  margin-bottom: 5px;
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 0.9em;
-}
-
-.message {
-  text-align: center;
-  font-size: 1.2em;
-  color: #666;
-  padding: 20px;
-}
-
-.error {
-  text-align: center;
-  font-size: 1.2em;
-  color: #dc3545;
-  padding: 20px;
-  border: 1px solid #dc3545;
-  background-color: #f8d7da;
+.dateInput, .searchInput {
+  padding: 10px 15px;
+  border: 1px solid #999;
   border-radius: 8px;
+  font-size: 1em;
+  width: 200px;
+  background-color: #ffffff;
+  color: #333333;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
+
+.dateInput:focus, .searchInput:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  outline: none;
+}
+
+.searchFilterGroup {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 40px; /* Increased gap to workout logs */
+  padding: 15px 25px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.searchFilterGroup:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.searchFilterGroup .filterGroup {
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.searchFilterGroup .filterGroup label {
+  font-size: 1.1em;
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.searchInput {
+  padding: 12px 18px;
+  border: 2px solid #aab7c4;
+  border-radius: 20px;
+  font-size: 1em;
+  width: 280px; /* Reduced width */
+  background-color: #f8f9fa;
+  color: #34495e;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
+}
+
+.searchInput:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 5px rgba(52, 152, 219, 0.3);
+  outline: none;
+}
+
+/* Ensure calendar picker is visible for date inputs */
+.dateInput::-webkit-calendar-picker-indicator {
+  display: block;
+  opacity: 1;
+  cursor: pointer;
+  filter: invert(0.5) sepia(1) saturate(5) hue-rotate(175deg); /* Optional: to make it more visible */
+}
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+

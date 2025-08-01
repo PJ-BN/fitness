@@ -40,6 +40,8 @@ namespace Fitness.Services
                 .Where(w => w.UserId == userId)
                 .Include(w => w.WorkoutExercises)
                     .ThenInclude(we => we.Sets)
+                .Include(w => w.WorkoutExercises)
+                    .ThenInclude(we => we.Exercise)
                 .ToListAsync();
         }
 
