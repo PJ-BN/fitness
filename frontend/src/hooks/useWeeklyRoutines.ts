@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import apiClient from '../apiclient/apiClient';
 import type { 
   WeeklyRoutine, 
@@ -8,7 +8,7 @@ import type {
 } from '../types/routine';
 
 interface WeeklyRoutineAPI {
-  id: number; // Changed from string to number to match backend
+  id: number;
   userId: string;
   name: string;
   description?: string;
@@ -38,7 +38,7 @@ const useWeeklyRoutines = (): UseWeeklyRoutinesResult => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const getAllRoutines = async (): Promise<WeeklyRoutineAPI[]> => {
+  const getAllRoutines = useCallback(async (): Promise<WeeklyRoutineAPI[]> => {
     setLoading(true);
     setError(null);
     
@@ -55,14 +55,13 @@ const useWeeklyRoutines = (): UseWeeklyRoutinesResult => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const createRoutine = async (routineData: Partial<WeeklyRoutine>): Promise<WeeklyRoutine | null> => {
     setLoading(true);
     setError(null);
     
     try {
-      // Convert to DTO format expected by backend
       const createData: WeeklyRoutineDto = {
         name: routineData.name || 'New Routine',
         description: routineData.description || '',
@@ -187,7 +186,6 @@ const useWeeklyRoutines = (): UseWeeklyRoutinesResult => {
     setError(null);
     
     try {
-      // Convert to DTO format expected by backend
       const updateData: Partial<DayRoutineDto> = {
         dayOfWeek,
         ...(dayRoutineData.dayName && { dayName: dayRoutineData.dayName }),

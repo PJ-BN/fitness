@@ -1,0 +1,232 @@
+/* General Dashboard Styles */
+.dashboardContainer {
+  padding: 2rem;
+  background-color: #f4f7f6;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Grid Layout */
+.mainGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+/* Card Styles */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.noData {
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+/* Stats Card */
+.statsCard {
+  grid-column: span 1;
+}
+
+.statsCard .statsRow {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+
+.statItem .statValue {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #007bff;
+}
+
+.statItem .statLabel {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Tip Card */
+.tipCard {
+  grid-column: span 1;
+}
+
+.tipCard .tipText {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* Actions Card */
+.actionsCard {
+  grid-column: span 1;
+}
+
+.actionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.actionButton {
+  display: block;
+  padding: 1rem 1.5rem;
+  background-color: #007bff;
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.actionButton:hover {
+  background-color: #0056b3;
+}
+
+/* Fitness Content Card */
+.fitnessContentCard {
+  grid-column: span 1;
+}
+
+.fitnessContentCard .benefitsList {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.8;
+}
+
+/* Routines Card */
+.routinesCard {
+  grid-column: span 1;
+}
+
+.routinesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.routineItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.routineItem:last-child {
+  border-bottom: none;
+}
+
+.routineName {
+  font-weight: 500;
+  color: #333;
+}
+
+.routineDate {
+  font-size: 1rem;
+  color: #888;
+}
+
+.viewAllLinkContainer {
+  text-align: right;
+  margin-top: 1rem;
+}
+
+.viewAllLink {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.viewAllLink:hover {
+  text-decoration: underline;
+}
+
+/* Activity Card */
+.activityCard {
+  grid-column: span 1;
+}
+
+.activityList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.activityItem {
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.activityItem:last-child {
+  border-bottom: none;
+}
+
+.activityDate {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.activityDesc {
+  font-size: 1rem;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Chart Card */
+.chartCard {
+  grid-column: span 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bar Chart Card */
+.barChartCard {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
