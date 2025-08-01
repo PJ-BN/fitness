@@ -19,25 +19,52 @@ const ExercisePieChart: React.FC<ExercisePieChartProps> = ({ data }) => {
   return (
     <div className={styles.container}>
       <h3 className={styles.title}>Exercise Distribution (Last 30 Days)</h3>
-      <ResponsiveContainer width="100%" height={260}>
-        <PieChart>
+      <div className={styles.chartWrapper}>
+        <ResponsiveContainer width="100%" height={460}>
+          <PieChart margin={{ top: 20, right: 10, bottom: 20, left: 10 }}>
           <Pie
             data={data}
             dataKey="value"
             nameKey="name"
             cx="50%"
-            cy="50%"
-            outerRadius={90}
-            label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+            cy="48%"
+            outerRadius={155}
+            innerRadius={45}
+            label={({ percent }) => {
+              const percentValue = (percent ? percent * 100 : 0);
+              return percentValue > 4 ? `${percentValue.toFixed(0)}%` : '';
+            }}
+            labelLine={false}
           >
             {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
-          <Tooltip formatter={(value: number) => `${value} reps`} />
-          <Legend />
+          <Tooltip formatter={(value: number) => `${value}%`} />
+          <Legend 
+            layout="horizontal" 
+            verticalAlign="bottom" 
+            align="center" 
+            iconType="circle" 
+            wrapperStyle={{ 
+              fontSize: '1rem', 
+              marginTop: 20, 
+              paddingTop: 10,
+              paddingBottom: 10,
+              lineHeight: '1.8',
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: '15px'
+            }}
+            formatter={(value) => {
+              // Limit legend text length
+              return value.length > 15 ? value.substring(0, 15) + '...' : value;
+            }}
+          />
         </PieChart>
       </ResponsiveContainer>
+      </div>
     </div>
   );
 };

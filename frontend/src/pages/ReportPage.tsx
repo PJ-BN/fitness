@@ -134,12 +134,16 @@ const ReportPage: React.FC = () => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Workout Progress Report</h1>
-      <ExercisePieChart data={pieChartData.map(({name, value}) => ({name, value}))} />
-      <ExerciseSelector 
-        exercises={allExercises}
-        selectedExercise={selectedExercise}
-        onExerciseChange={setSelectedExercise}
-      />
+      <div className={styles.pieChartCard}>
+        <ExercisePieChart data={pieChartData.map(({name, value}) => ({name, value}))} />
+      </div>
+      <div className={styles.selectorCard}>
+        <ExerciseSelector 
+          exercises={allExercises}
+          selectedExercise={selectedExercise}
+          onExerciseChange={setSelectedExercise}
+        />
+      </div>
       <ProgressChart 
         selectedExercise={selectedExercise}
         chartData={chartData}
