@@ -1,0 +1,422 @@
+.notesTextarea {
+  background: #fff !important;
+  color: #222 !important;
+  border: 1.5px solid #d1d5db !important;
+  border-radius: 6px !important;
+  padding: 0.7rem 1rem !important;
+  font-size: 1rem;
+  min-height: 48px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.3rem;
+  margin-bottom: 0.7rem;
+  resize: vertical;
+  display: block;
+}
+.smallInput, .wideInput {
+  background: #fff !important;
+  color: #222 !important;
+  border: 1.5px solid #d1d5db !important;
+  border-radius: 6px !important;
+  padding: 0.5rem 0.7rem !important;
+  margin: 0.2rem 0.3rem 0.2rem 0;
+  font-size: 1rem;
+  box-sizing: border-box;
+  min-width: 0;
+  display: inline-block;
+}
+.smallInput {
+  width: 70px !important;
+  max-width: 100px;
+}
+.wideInput {
+  width: 180px !important;
+  max-width: 100%;
+}
+/* Professional Routine Select Section */
+.routineSelectSection {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+}
+
+.routineSelectCard {
+  background: #f8fafc;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 2.2rem 2.7rem 2rem 2.7rem;
+  min-width: 340px;
+  max-width: 440px;
+  width: 100%;
+  border: 1.5px solid #e5e7eb;
+  transition: box-shadow 0.2s;
+}
+.routineSelectCard:focus-within {
+  box-shadow: 0 6px 32px rgba(99,102,241,0.13);
+  border-color: #6366f1;
+}
+
+.routineSelectHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+.routineSelectIcon {
+  font-size: 2.2rem;
+  margin-right: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.routineSelectTitle {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 0.2rem 0;
+  color: #22223b;
+}
+.routineSelectSubtitle {
+  font-size: 0.98rem;
+  color: #6366f1;
+  margin: 0;
+  font-weight: 500;
+}
+.routineSelectLabel {
+  font-size: 1.08rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #374151;
+  display: block;
+}
+.routineSelectDropdown {
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  border: 1.5px solid #d1d5db;
+  font-size: 1.05rem;
+  background: #fff;
+  color: #22223b;
+  transition: border 0.2s, box-shadow 0.2s;
+  margin-bottom: 0.2rem;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+.routineSelectDropdown:focus {
+  outline: none;
+  border: 1.5px solid #6366f1;
+  background: #f5f3ff;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+}
+/* Routine Select Card Styles */
+.routineSelectCard {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 2rem 2.5rem 1.5rem 2.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 420px;
+  width: 100%;
+}
+
+.routineSelectLabel {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+  display: flex;
+  align-items: center;
+  color: #222;
+}
+
+.routineSelectIcon {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.routineSelectDropdown {
+  width: 100%;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  background: #f9fafb;
+  color: #222;
+  transition: border 0.2s;
+  margin-bottom: 0.2rem;
+}
+.routineSelectDropdown:focus {
+  outline: none;
+  border: 1.5px solid #6366f1;
+  background: #fff;
+}
+.container {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7f6;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.selectField {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid #c0c0c0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #ffffff;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.selectField:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.message {
+  background-color: #e0f7fa;
+  color: #00796b;
+  padding: 1.2rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 1.1rem;
+  border: 1px solid #b2ebf2;
+}
+
+.form {
+  background-color: #ffffff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+h2 {
+  color: #34495e;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.8rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.exercisesList {
+  margin-top: 2rem;
+}
+
+.exerciseCard {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background-color: #fdfdfd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.exerciseCard h3 {
+  color: #007bff;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.exerciseCard p {
+  margin-bottom: 1.2rem;
+  color: #555;
+  font-size: 1rem;
+}
+
+.setsContainer {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.setRow {
+  display: grid;
+  grid-template-columns: auto repeat(4, minmax(70px, 1fr)) auto; /* Adjusted for labels and remove button */
+  align-items: center;
+  gap: 10px;
+  padding: 0.75rem;
+  background-color: #f0f4f7;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.inputGroup label {
+  font-size: 0.85rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.setRow span {
+  font-weight: 600;
+  color: #444;
+  white-space: nowrap;
+}
+
+.smallInput,
+.wideInput,
+.notesTextarea {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #c0c0c0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background-color: #ffffff;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.smallInput:focus,
+.wideInput:focus,
+.notesTextarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.smallInput {
+  width: 100%; /* Make them fill their grid column */
+  min-width: 70px;
+}
+
+.wideInput {
+  width: 100%; /* Make them fill their grid column */
+  min-width: 120px;
+}
+
+.notesTextarea {
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  margin-top: 1rem;
+}
+
+.submitButton {
+  display: block;
+  width: 100%;
+  padding: 1.2rem;
+  background-color: #28a745; /* A more vibrant green for submit */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 2rem;
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+}
+
+.submitButton:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(40, 167, 69, 0.4);
+}
+
+.addSetButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+  align-self: flex-start; /* Align to the start of the grid column */
+}
+
+.addSetButton:hover {
+  background-color: #0056b3;
+}
+
+.removeSetButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.removeSetButton:hover {
+  background-color: #c82333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .setRow {
+    grid-template-columns: 1fr 1fr; /* Two columns for inputs on smaller screens */
+  }
+
+  .setRow span {
+    grid-column: 1 / -1; /* Span full width for set number */
+    text-align: left;
+    margin-bottom: 0.5rem;
+  }
+
+  .inputGroup {
+    width: 100%; /* Ensure input groups take full width */
+  }
+
+  .smallInput,
+  .wideInput {
+    min-width: unset; /* Remove min-width on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .form {
+    padding: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .exerciseCard {
+    padding: 1rem;
+  }
+}

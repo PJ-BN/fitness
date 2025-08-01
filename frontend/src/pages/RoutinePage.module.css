@@ -86,6 +86,19 @@
   margin-bottom: 30px;
 }
 
+.noExercises {
+  font-style: italic;
+  color: #666;
+  padding: 5px 10px;
+}
+
+.emptyBodyParts {
+  font-style: italic;
+  color: #666;
+  padding: 5px 10px;
+  font-size: 0.9rem;
+}
+
 .dayCard {
   background: var(--card-background);
   border-radius: 12px;

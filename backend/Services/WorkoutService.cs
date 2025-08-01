@@ -20,17 +20,27 @@ namespace Fitness.Services
 
         public async Task<Workout> GetWorkoutByIdAsync(int id)
         {
-            return await _context.Workouts.FindAsync(id);
+            return await _context.Workouts
+                .Include(w => w.WorkoutExercises)
+                    .ThenInclude(we => we.Sets)
+                .FirstOrDefaultAsync(w => w.Id == id);
         }
 
         public async Task<IEnumerable<Workout>> GetAllWorkoutsAsync()
         {
-            return await _context.Workouts.ToListAsync();
+            return await _context.Workouts
+                .Include(w => w.WorkoutExercises)
+                    .ThenInclude(we => we.Sets)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Workout>> GetWorkoutsByUserIdAsync(string userId)
         {
-            return await _context.Workouts.Where(w => w.UserId == userId).ToListAsync();
+            return await _context.Workouts
+                .Where(w => w.UserId == userId)
+                .Include(w => w.WorkoutExercises)
+                    .ThenInclude(we => we.Sets)
+                .ToListAsync();
         }
 
         public async Task<Workout> CreateWorkoutAsync(Workout workout)

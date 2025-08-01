@@ -152,6 +152,11 @@ const apiClient = {
     deleteByDayRoutine: (dayRoutineId: string) => apiClient.delete<any>(`api/DayRoutineExercises/by-day-routine/${dayRoutineId}`),
   },
 
+  // Workout Logs endpoints
+  workoutLogs: {
+    create: (workoutLogData: any) => apiClient.post<any>('api/Workouts/log-from-routine', workoutLogData),
+  },
+
   // Legacy routines for backward compatibility
   routines: {
     getByUserId: (userId: string) => apiClient.get<any>(`api/Routines/ByUser/${userId}`),

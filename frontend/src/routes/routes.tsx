@@ -13,6 +13,7 @@ import ReportPage from '../pages/ReportPage';
 import NutritionPage from '../pages/NutritionPage';
 import ProfilePage from '../pages/ProfilePage';
 import LoggedInLayout from '../layout/LoggedInLayout';
+import WorkoutLogPage from '../pages/WorkoutLogPage';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -105,6 +106,16 @@ const router = createBrowserRouter([
       <ProtectedRoute>
         <LoggedInLayout>
           <ProfilePage />
+        </LoggedInLayout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/workout-log',
+    element: (
+      <ProtectedRoute>
+        <LoggedInLayout>
+          <WorkoutLogPage />
         </LoggedInLayout>
       </ProtectedRoute>
     ),
