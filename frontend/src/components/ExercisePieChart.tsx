@@ -18,9 +18,13 @@ const COLORS = [
 const ExercisePieChart: React.FC<ExercisePieChartProps> = ({ data }) => {
   return (
     <div className={styles.container}>
-      <h3 className={styles.title}>Exercise Distribution (Last 30 Days)</h3>
+      <div>
+
+        <h3 className={styles.title}>Exercise Distribution (Last 30 Days)</h3>
+      </div>
+
       <div className={styles.chartWrapper}>
-        <ResponsiveContainer width="100%" height={460}>
+        <ResponsiveContainer width="100%" height={598}>
           <PieChart margin={{ top: 20, right: 10, bottom: 20, left: 10 }}>
           <Pie
             data={data}
@@ -28,8 +32,8 @@ const ExercisePieChart: React.FC<ExercisePieChartProps> = ({ data }) => {
             nameKey="name"
             cx="50%"
             cy="48%"
-            outerRadius={155}
-            innerRadius={45}
+            outerRadius={201.5}
+            innerRadius={58.5}
             label={({ percent }) => {
               const percentValue = (percent ? percent * 100 : 0);
               return percentValue > 4 ? `${percentValue.toFixed(0)}%` : '';

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import apiClient from '../apiclient/apiClient';
 import { useUser } from '../contexts/UserContext';
 import type { WorkoutLog } from '../types/api';
@@ -16,51 +16,46 @@ const WorkoutLogList: React.FC = () => {
 
   useEffect(() => {
     const fetchWorkoutLogs = async () => {
-      // If user data is still loading, wait for it.
-      if (userLoading) {
-        setWorkoutLogsLoading(true); // Keep loading state true while user data is being fetched
-        return;
-      }
-
-      // If user data has finished loading and no user is found, show error.
       if (!user || !user.id) {
-        setError('User not logged in or user ID not available.');
-        setWorkoutLogsLoading(false); // User data is not loading, and no user is found, so stop loading.
+        if (!userLoading) {
+          setError('User not logged in or user ID not available.');
+        }
+        setWorkoutLogsLoading(false);
         return;
       }
 
-      // User data is available, proceed to fetch workout logs.
       try {
-        setWorkoutLogsLoading(true); // Start loading for workout logs
+        setWorkoutLogsLoading(true);
         const response = await apiClient.get<WorkoutLog[]>(`api/Workouts/ByUser/${user.id}`);
         setWorkoutLogs(response.data);
         setFilteredLogs(response.data);
+        setError(null);
       } catch (err) {
         setError('Failed to fetch workout logs.');
         console.error('Error fetching workout logs:', err);
       } finally {
-        setWorkoutLogsLoading(false); // Stop loading regardless of success or failure
+        setWorkoutLogsLoading(false);
       }
     };
 
-    fetchWorkoutLogs();
+    if (!userLoading) {
+      fetchWorkoutLogs();
+    }
   }, [user, userLoading]);
 
   useEffect(() => {
     let tempLogs = workoutLogs;
 
-    // Filter by date range
     if (startDate) {
       const start = new Date(startDate);
       tempLogs = tempLogs.filter(log => new Date(log.date) >= start);
     }
     if (endDate) {
       const end = new Date(endDate);
-      end.setDate(end.getDate() + 1); // Add one day to include the entire end date
+      end.setDate(end.getDate() + 1);
       tempLogs = tempLogs.filter(log => new Date(log.date) < end);
     }
 
-    // Filter by exercise name
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
       tempLogs = tempLogs.filter(log =>
@@ -70,14 +65,17 @@ const WorkoutLogList: React.FC = () => {
       );
     }
 
-    // Sort by date (latest first)
     tempLogs.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     setFilteredLogs(tempLogs);
   }, [workoutLogs, startDate, endDate, searchTerm]);
 
   if (userLoading || workoutLogsLoading) {
-    return <div className={styles.message}>Loading workout logs...</div>;
+    return (
+      <div className={styles.loaderContainer}>
+        <div className={styles.loader}></div>
+      </div>
+    );
   }
 
   if (error) {

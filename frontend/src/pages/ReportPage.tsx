@@ -120,7 +120,11 @@ const ReportPage: React.FC = () => {
   }, [allExercises, selectedExercise]);
 
   if (loading) {
-    return <div className={styles.message}>Loading workout data...</div>;
+    return (
+      <div className={styles.loaderContainer}>
+        <div className={styles.loader}></div>
+      </div>
+    );
   }
 
   if (error) {
