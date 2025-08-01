@@ -1,11 +1,13 @@
 using Fitness.Models;
 using Fitness.Models.DTOs;
 using Fitness.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Fitness.Controllers
 {
@@ -15,10 +17,14 @@ namespace Fitness.Controllers
     public class WorkoutsController : ControllerBase
     {
         private readonly IWorkoutService _workoutService;
+        private readonly UserManager<User> _userManager;
 
-        public WorkoutsController(IWorkoutService workoutService)
+        public WorkoutsController(IWorkoutService workoutService,
+            UserManager<User> userManager)
         {
             _workoutService = workoutService;
+            _userManager = userManager;
+
         }
 
         // GET: api/Workouts
@@ -108,12 +114,19 @@ namespace Fitness.Controllers
         }
 
         [HttpPost("log-from-routine")]
+        [Authorize]
         public async Task<IActionResult> LogWorkoutFromRoutine([FromBody] LogWorkoutFromRoutineDto logWorkoutFromRoutineDto)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // Simplified user ID extraction
+            var userId = User.FindFirst("user_id")?.Value;
             if (string.IsNullOrEmpty(userId))
             {
-                return Unauthorized();
+                userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            }
+            
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(ApiResponse<object>.ErrorResponse("User ID not found in token."));
             }
 
             var response = await _workoutService.LogWorkoutFromRoutineAsync(userId, logWorkoutFromRoutineDto);

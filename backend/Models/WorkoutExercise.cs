@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Fitness.Models
 {
@@ -13,6 +14,7 @@ namespace Fitness.Models
         public int WorkoutId { get; set; }
 
         [ForeignKey("WorkoutId")]
+        [JsonIgnore] // This breaks the cycle
         public Workout Workout { get; set; }
 
         [Required]

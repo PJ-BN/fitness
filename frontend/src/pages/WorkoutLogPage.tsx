@@ -178,8 +178,9 @@ const WorkoutLogPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('DEBUG:', { todayRoutine, selectedRoutineId, todayRoutineId: todayRoutine?.id });
 
-    if (!todayRoutine || !selectedRoutineId || !todayRoutine.id) {
+    if (!todayRoutine || !selectedRoutineId ) {
       alert('Please select a routine and ensure todays routine is loaded with a valid ID.');
       return;
     }
@@ -190,8 +191,11 @@ const WorkoutLogPage: React.FC = () => {
       sets: data.sets,
     }));
 
+    console.log("today routineid :", todayRoutine.exercises[0].dayRoutineId);
+    console.log("completed exercises array :", completedExercisesArray);
+
     const workoutLog: WorkoutLogData = {
-      dayRoutineId: todayRoutine.id,
+      dayRoutineId: todayRoutine.exercises[0].dayRoutineId ?? todayRoutine.id, // Use nullish coalescing to provide a fallback
       date: new Date().toISOString(),
       notes: workoutNotes,
       completedExercises: completedExercisesArray,

@@ -1,0 +1,72 @@
+.listContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.logItem {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logItem h3 {
+  color: #007bff;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.logItem p {
+  margin-bottom: 5px;
+  font-size: 0.95em;
+}
+
+.logItem strong {
+  color: #555;
+}
+
+.exercises {
+  margin-top: 15px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.exercises h4 {
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.exercises ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.exercises li {
+  background-color: #e9ecef;
+  margin-bottom: 5px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.message {
+  text-align: center;
+  font-size: 1.2em;
+  color: #666;
+  padding: 20px;
+}
+
+.error {
+  text-align: center;
+  font-size: 1.2em;
+  color: #dc3545;
+  padding: 20px;
+  border: 1px solid #dc3545;
+  background-color: #f8d7da;
+  border-radius: 8px;
+}

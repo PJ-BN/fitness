@@ -108,6 +108,7 @@ export interface RoutineExercise {
   duration?: number;
   weight?: number;
   notes?: string;
+  dayRoutineId?: number; // Optional, used for legacy routines
 }
 
 export interface LegacyDayRoutine {
