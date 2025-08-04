@@ -1,24 +1,30 @@
 
 import React, { useState, useMemo } from 'react';
 import useFetchExercises from '../hooks/useFetchExercises';
+import useDebounce from '../hooks/useDebounce';
 import styles from './ExercisePage.module.css';
+import Fuse from 'fuse.js';
 
 const ExercisePage: React.FC = () => {
   const { exercises, loading, error } = useFetchExercises();
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 300); // Debounce search term by 300ms
 
-  // Filter exercises based on search term
+  // Fuse.js options for fuzzy searching
+  const fuseOptions = {
+    keys: ['name', 'category', 'muscleGroups', 'equipment'],
+    threshold: 0.3, // Adjust this value to control the strictness of the match (0 = exact, 1 = very loose)
+  };
+
+  // Filter exercises based on debounced search term using Fuse.js
   const filteredExercises = useMemo(() => {
-    if (!searchTerm) return exercises;
-    
-    const term = searchTerm.toLowerCase();
-    return exercises.filter(exercise => 
-      exercise.name.toLowerCase().includes(term) ||
-      exercise.category.toLowerCase().includes(term) ||
-      exercise.muscleGroups.toLowerCase().includes(term) ||
-      exercise.equipment.toLowerCase().includes(term)
-    );
-  }, [exercises, searchTerm]);
+    if (!debouncedSearchTerm) {
+      return exercises;
+    }
+
+    const fuse = new Fuse(exercises, fuseOptions);
+    return fuse.search(debouncedSearchTerm).map(result => result.item);
+  }, [exercises, debouncedSearchTerm]);
 
   if (loading) {
     return <div className={styles.loading}>Loading exercises...</div>;
