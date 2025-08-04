@@ -35,8 +35,8 @@ const useFetchExercises = (): FetchExercisesResult => {
         } else {
           setError(response.message || 'Failed to fetch exercises');
         }
-      } catch (err: any) {
-        setError(err.message || 'An unexpected error occurred');
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An unexpected error occurred');
       } finally {
         setLoading(false);
       }

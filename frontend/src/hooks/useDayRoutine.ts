@@ -17,7 +17,7 @@ interface DayRoutineExercise {
   duration?: number;
   weight?: number;
   notes?: string;
-  exercise?: any; // Exercise details
+  exercise?: unknown; // Exercise details
 }
 
 interface UseDayRoutineResult {
@@ -47,12 +47,12 @@ const useDayRoutine = (): UseDayRoutineResult => {
     try {
       const response = await apiClient.dayRoutines.getBodyParts(dayId);
       if (response.success && 'data' in response && response.data) {
-        return response.data;
+        return response.data as DayRoutineBodyPart[];
       } else {
         throw new Error(response.message || 'Failed to fetch body parts');
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to fetch body parts');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch body parts');
       return [];
     } finally {
       setLoading(false);
@@ -70,12 +70,12 @@ const useDayRoutine = (): UseDayRoutineResult => {
       };
       const response = await apiClient.dayRoutines.addBodyPart(dayId, bodyPartData);
       if (response.success && 'data' in response && response.data) {
-        return response.data;
+        return response.data as DayRoutineBodyPart;
       } else {
         throw new Error(response.message || 'Failed to add body part');
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to add body part');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to add body part');
       return null;
     } finally {
       setLoading(false);
@@ -87,10 +87,10 @@ const useDayRoutine = (): UseDayRoutineResult => {
     setError(null);
     
     try {
-      const response = await apiClient.dayRoutines.removeBodyPart(dayId);
+      const response = await apiClient.dayRoutines.removeBodyPart(dayId, {});
       return response.success;
-    } catch (err: any) {
-      setError(err.message || 'Failed to remove body part');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to remove body part');
       return false;
     } finally {
       setLoading(false);
@@ -104,12 +104,12 @@ const useDayRoutine = (): UseDayRoutineResult => {
     try {
       const response = await apiClient.dayRoutines.getExercises(dayId);
       if (response.success && 'data' in response && response.data) {
-        return response.data;
+        return response.data as DayRoutineExercise[];
       } else {
         throw new Error(response.message || 'Failed to fetch exercises');
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to fetch exercises');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch exercises');
       return [];
     } finally {
       setLoading(false);
@@ -133,12 +133,12 @@ const useDayRoutine = (): UseDayRoutineResult => {
       
       const response = await apiClient.dayRoutines.addExercise(dayId, exerciseData);
       if (response.success && 'data' in response && response.data) {
-        return response.data;
+        return response.data as DayRoutineExercise;
       } else {
         throw new Error(response.message || 'Failed to add exercise');
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to add exercise');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to add exercise');
       return null;
     } finally {
       setLoading(false);
@@ -160,12 +160,12 @@ const useDayRoutine = (): UseDayRoutineResult => {
       
       const response = await apiClient.dayRoutines.updateExercise(dayId, exerciseId, exerciseData);
       if (response.success && 'data' in response && response.data) {
-        return response.data;
+        return response.data as DayRoutineExercise;
       } else {
         throw new Error(response.message || 'Failed to update exercise');
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to update exercise');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update exercise');
       return null;
     } finally {
       setLoading(false);
@@ -179,8 +179,8 @@ const useDayRoutine = (): UseDayRoutineResult => {
     try {
       const response = await apiClient.dayRoutines.removeExercise(dayId, exerciseId);
       return response.success;
-    } catch (err: any) {
-      setError(err.message || 'Failed to remove exercise');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to remove exercise');
       return false;
     } finally {
       setLoading(false);

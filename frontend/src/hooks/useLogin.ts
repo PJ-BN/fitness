@@ -41,12 +41,13 @@ const useLogin = (): LoginResult => {
             Cookies.set('userId', userResponse.data.id, { expires: 7 });
             setSuccess(true);
             navigate('/dashboard'); // Redirect to dashboard on successful login
+            window.location.reload(); // Force full browser refresh
           } else {
             setError('Failed to fetch user data after login');
             // Clear the token since we couldn't get user data
             Cookies.remove('token');
           }
-        } catch (userErr: any) {
+        } catch (userErr) {
           setError('Failed to fetch user data after login');
           // Clear the token since we couldn't get user data
           Cookies.remove('token');
@@ -54,8 +55,8 @@ const useLogin = (): LoginResult => {
       } else {
         setError(loginResponse.message || 'Login failed: No token received');
       }
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
       setLoading(false);
     }

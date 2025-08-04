@@ -1,54 +1,71 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { loadStripe } from '@stripe/stripe-js';
 import apiClient from '../apiclient/apiClient';
 import type { ApiResponseWithData } from '../types/api';
-import Cookies from 'js-cookie';
+
+// Ensure you have your Stripe public key in your environment variables
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 interface SignUpData {
   name: string;
   email: string;
   password: string;
+  phoneNumber: string;
+  plan: 'monthly' | 'yearly';
 }
 
 interface SignUpResult {
   loading: boolean;
   error: string | null;
-  success: boolean;
-  signUp: (data: SignUpData) => Promise<void>;
+  createCheckoutSession: (data: SignUpData) => Promise<void>;
 }
 
 const useSignUp = (): SignUpResult => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
 
-  const signUp = async (data: SignUpData) => {
+  const createCheckoutSession = async (data: SignUpData) => {
     setLoading(true);
     setError(null);
-    setSuccess(false);
     try {
-      const response = await apiClient.post<ApiResponseWithData<{ token: string }>>('api/Auth/register', data);
-      if (response.success) {
-        const dataResponse = response as ApiResponseWithData<{ token: string }>;
-        if (dataResponse.data && dataResponse.data.token) {
-          Cookies.set('token', dataResponse.data.token, { expires: 7 }); // Store token for 7 days
-          setSuccess(true);
-          navigate('/dashboard'); // Redirect to dashboard on successful signup
+      const { plan, ...userData } = data;
+      const response = await apiClient.post<{ sessionId: string }>(
+        `api/payment/create-checkout-session?plan=${plan}`,
+        userData
+      );
+
+      if (response && response.sessionId) {
+        const sessionId = response.sessionId;
+
+        if (sessionId) {
+          const stripe = await stripePromise;
+          if (stripe) {
+            const { error } = await stripe.redirectToCheckout({ sessionId });
+            if (error) {
+              setError(error.message || 'Failed to redirect to Stripe.');
+            }
+          } else {
+            setError('Stripe.js has not loaded yet.');
+          }
         } else {
-          setError(response.message || 'Sign up failed: No token received');
+          setError('Failed to retrieve a session ID.');
         }
       } else {
-        setError(response.message || 'Sign up failed');
+        setError('Failed to create checkout session.');
       }
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred');
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unexpected error occurred.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  return { loading, error, success, signUp };
+  return { loading, error, createCheckoutSession };
 };
 
 export default useSignUp;
+

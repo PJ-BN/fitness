@@ -5,18 +5,19 @@ const SignUpPage: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { loading, error, success, signUp } = useSignUp();
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [plan, setPlan] = useState<'monthly' | 'yearly'>('monthly');
+  const { loading, error, createCheckoutSession } = useSignUp();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    await signUp({ name, email, password });
+    await createCheckoutSession({ name, email, password, phoneNumber, plan });
   };
 
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>Sign Up</h2>
       <form onSubmit={handleSignUp} style={styles.form}>
-        
         <div style={styles.formGroup}>
           <label htmlFor="name" style={styles.label}>Name:</label>
           <input
@@ -50,11 +51,48 @@ const SignUpPage: React.FC = () => {
             required
           />
         </div>
+        <div style={styles.formGroup}>
+          <label htmlFor="phoneNumber" style={styles.label}>Phone Number:</label>
+          <input
+            type="tel"
+            id="phoneNumber"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            style={styles.input}
+            required
+          />
+        </div>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Choose a Plan:</label>
+          <div style={styles.planSelector}>
+            <label style={styles.planLabel}>
+              <input
+                type="radio"
+                name="plan"
+                value="monthly"
+                checked={plan === 'monthly'}
+                onChange={() => setPlan('monthly')}
+                style={styles.radioInput}
+              />
+              Monthly
+            </label>
+            <label style={styles.planLabel}>
+              <input
+                type="radio"
+                name="plan"
+                value="yearly"
+                checked={plan === 'yearly'}
+                onChange={() => setPlan('yearly')}
+                style={styles.radioInput}
+              />
+              Yearly
+            </label>
+          </div>
+        </div>
         <button type="submit" style={styles.button} disabled={loading}>
-          {loading ? 'Signing Up...' : 'Sign Up'}
+          {loading ? 'Processing...' : 'Proceed to Payment'}
         </button>
         {error && <p style={styles.errorMessage}>{error}</p>}
-        {success && <p style={styles.successMessage}>Sign up successful!</p>}
       </form>
     </div>
   );
@@ -63,18 +101,18 @@ const SignUpPage: React.FC = () => {
 const styles = {
   container: {
     display: 'flex',
-    flexDirection: 'column' as 'column',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100vw',
-    height: '100vh',
-    background: 'linear-gradient(135deg, #000000, #111111, #330000)', // Using the last fitness theme gradient from LoginPage
+    minHeight: '100vh',
+    background: 'linear-gradient(135deg, #000000, #111111, #330000)',
     padding: '20px',
   },
   heading: {
     marginBottom: '30px',
-    color: '#333',
+    color: '#ffffff',
     fontSize: '2.5em',
+    textAlign: 'center',
   },
   form: {
     backgroundColor: '#fff',
@@ -84,7 +122,7 @@ const styles = {
     width: '100%',
     maxWidth: '400px',
     display: 'flex',
-    flexDirection: 'column' as 'column',
+    flexDirection: 'column',
   },
   formGroup: {
     marginBottom: '20px',
@@ -98,14 +136,26 @@ const styles = {
   input: {
     width: '100%',
     padding: '12px',
-    border: 'none',
-    borderBottom: '1px solid #eee', // Very subtle bottom border
+    border: '1px solid #ccc',
     borderRadius: '4px',
     fontSize: '1em',
-    boxSizing: 'border-box' as 'border-box',
-    backgroundColor: '#e0e0e0', // Even darker background color for visibility
+    boxSizing: 'border-box',
+    backgroundColor: '#f9f9f9',
     color: '#333',
     outline: 'none',
+  },
+  planSelector: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    marginTop: '10px',
+  },
+  planLabel: {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+  },
+  radioInput: {
+    marginRight: '8px',
   },
   button: {
     backgroundColor: '#007bff',
@@ -118,21 +168,14 @@ const styles = {
     marginTop: '10px',
     transition: 'background-color 0.3s ease',
   },
-  buttonHover: {
-    backgroundColor: '#0056b3',
-  },
   errorMessage: {
     color: 'red',
     marginTop: '10px',
-    textAlign: 'center' as 'center',
+    textAlign: 'center',
   },
-  successMessage: {
-    color: 'green',
-    marginTop: '10px',
-    textAlign: 'center' as 'center',
-  },
-};
+} as const;
 
 export default SignUpPage;
+
 
 

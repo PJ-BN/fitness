@@ -16,6 +16,8 @@ import ProfilePage from '../pages/ProfilePage';
 import LoggedInLayout from '../layout/LoggedInLayout';
 import WorkoutLogPage from '../pages/WorkoutLogPage';
 import WorkoutLogViewPage from '../pages/WorkoutLogViewPage';
+import SuccessPage from '../pages/SuccessPage';
+import CancelPage from '../pages/CancelPage';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -41,6 +43,14 @@ const router = createBrowserRouter([
   {
     path: '/signup',
     element: <SignUpPage />,
+  },
+  {
+    path: '/success',
+    element: <SuccessPage />,
+  },
+  {
+    path: '/cancel',
+    element: <CancelPage />,
   },
   {
     path: '/dashboard',
@@ -139,3 +149,4 @@ const AppRouter: React.FC = () => {
 };
 
 export default AppRouter;
+

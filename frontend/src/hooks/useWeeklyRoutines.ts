@@ -43,7 +43,7 @@ const useWeeklyRoutines = (): UseWeeklyRoutinesResult => {
     setError(null);
     
     try {
-      const response = await apiClient.weeklyRoutines.getAll();
+      const response = await apiClient.weeklyRoutines.getMyRoutines();
       if (response.success && 'data' in response && response.data) {
         return response.data;
       } else {

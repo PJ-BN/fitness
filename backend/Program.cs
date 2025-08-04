@@ -38,6 +38,8 @@ builder.Services.AddScoped<IWeeklyRoutineService, WeeklyRoutineService>();
 builder.Services.AddScoped<IDayRoutineService, DayRoutineService>();
 builder.Services.AddScoped<IDayRoutineBodyPartService, DayRoutineBodyPartService>();
 builder.Services.AddScoped<IDayRoutineExerciseService, DayRoutineExerciseService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IStripeService, StripeService>();
 
 // Configure Identity
 builder.Services.AddIdentity<User, IdentityRole>()

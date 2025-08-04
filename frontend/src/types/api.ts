@@ -22,7 +22,7 @@ export interface WorkoutExercise {
   id: number;
   workoutId: number;
   exerciseId: number;
-  exercise: any;
+  exercise: unknown;
   notes: string;
   sets: Set[];
 }
@@ -30,7 +30,7 @@ export interface WorkoutExercise {
 export interface WorkoutLog {
   id: number;
   userId: string;
-  user: any;
+  user: unknown;
   date: string;
   notes: string;
   createdAt: string;

@@ -112,7 +112,7 @@ export interface RoutineExercise {
 }
 
 export interface LegacyDayRoutine {
-  id: any;
+  id: unknown;
   dayOfWeek: number; // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
   dayName: string;
   bodyParts: string[];
