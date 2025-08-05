@@ -82,16 +82,7 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
-  {
-    path: '/goal',
-    element: (
-      <ProtectedRoute>
-        <LoggedInLayout>
-          <GoalPage />
-        </LoggedInLayout>
-      </ProtectedRoute>
-    ),
-  },
+  
   {
     path: '/report',
     element: (

@@ -25,7 +25,6 @@ const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onToggle }) => {
         <Link to="/workout-log" className={styles.navItem}><FaDumbbell /><span>Workout Log</span></Link>
         <Link to="/workout-logs-view" className={styles.navItem}><FaClipboardList /><span>Workout Logs</span></Link>
         <Link to="/exercise" className={styles.navItem}><FaDumbbell /><span>Exercise</span></Link>
-        <Link to="/goal" className={styles.navItem}><FaBullseye /><span>Goal</span></Link>
         <Link to="/report" className={styles.navItem}><FaChartBar /><span>Report</span></Link>
         <Link to="/nutrition" className={styles.navItem}><FaAppleAlt /><span>Nutrition</span></Link>
       </div>
