@@ -1,132 +1,194 @@
 .hero {
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/anastase-maragos-7kEpUPB8vNk-unsplash.jpg') no-repeat center center/cover;
-  background-attachment: fixed; /* Parallax effect */
-  color: var(--color-white);
-  text-align: center;
-  padding: 120px 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 90vh; /* More prominent hero */
   position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%);
+  color: var(--color-white);
   overflow: hidden;
 }
 
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.2), transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1), transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(34, 197, 94, 0.15), transparent 50%);
+  z-index: 1;
+}
+
 .heroContent {
-  max-width: 90%;
-  z-index: 2; /* Ensure content is above overlay */
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  padding: 2rem;
+  text-align: center;
+  margin: 0 auto;
+  animation: heroFadeIn 1s ease-out;
 }
 
 .heroContent h1 {
-  font-size: 4.5em;
-  margin-bottom: 25px;
-  font-weight: 700;
-  line-height: 1.1;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  color: var(--color-white);
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  animation: slideInFromLeft 1s ease-out 0.2s both;
 }
 
 .heroContent p {
-  font-size: 1.8em;
-  margin-bottom: 50px;
-  line-height: 1.5;
-  color: var(--color-text-light);
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 2rem;
+  line-height: 1.7;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  animation: slideInFromLeft 1s ease-out 0.4s both;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: slideInFromBottom 1s ease-out 0.6s both;
+}
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 .ctaButtons a {
-  padding: 18px 40px;
-  font-size: 1.4em;
-  border: none;
-  border-radius: 50px; /* Pill shape */
-  cursor: pointer;
-  margin: 0 15px;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
+  padding: 1rem 2rem;
+  border-radius: var(--radius-pill);
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  text-decoration: none;
+  transition: all var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: float 3s ease-in-out infinite;
 }
 
 .signUpButton {
-  background-color: var(--color-accent-green);
-  color: var(--color-dark-bg);
-  box-shadow: 0 5px 15px rgba(0, 230, 118, 0.4);
+  background: var(--color-white);
+  color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation-delay: 0.2s;
 }
 
 .signUpButton:hover {
-  background-color: #00c853;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 230, 118, 0.6);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  animation-play-state: paused;
 }
 
 .loginButton {
-  background-color: transparent;
-  color: var(--color-accent-blue);
-  border: 2px solid var(--color-accent-blue);
-  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--color-white);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(15px);
+  animation-delay: 0.4s;
 }
 
 .loginButton:hover {
-  background-color: var(--color-accent-blue);
-  color: var(--color-white);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-4px);
+  animation-play-state: paused;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .heroContent h1 {
-    font-size: 3.5em;
-  }
+/* Enhanced hero background with better opacity */
+.hero::after {
+  content: '';
+  position: absolute;
+  right: -10%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60%;
+  height: 120%;
+  background: url('/victor-freitas-WvDYdXDzkhs-unsplash.jpg') center/cover no-repeat;
+  opacity: 0.6;
+  z-index: 1;
+  border-radius: 50%;
+  filter: grayscale(100%) brightness(0.8);
+  animation: parallaxFloat 4s ease-in-out infinite alternate;
+}
 
-  .heroContent p {
-    font-size: 1.5em;
+@keyframes parallaxFloat {
+  0% {
+    transform: translateY(-50%) translateX(0);
   }
-
-  .ctaButtons a {
-    padding: 15px 30px;
-    font-size: 1.2em;
+  100% {
+    transform: translateY(-50%) translateX(10px);
   }
 }
 
+/* Scroll-triggered animations */
+.hero.scrolled {
+  transform: translateY(-20px);
+  transition: transform 0.6s ease-out;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .hero {
-    padding: 80px 15px;
-    min-height: 70vh;
+    min-height: 90vh;
+    padding: 2rem 1rem;
   }
-
-  .heroContent h1 {
-    font-size: 2.8em;
+  
+  .heroContent {
+    padding: 1rem;
   }
-
+  
   .heroContent p {
-    font-size: 1.2em;
+    font-size: 1rem;
   }
-
-  .ctaButtons a {
-    padding: 12px 25px;
-    font-size: 1em;
-    margin: 10px 5px;
-  }
-}
-
-@media (max-width: 480px) {
-  .heroContent h1 {
-    font-size: 2.2em;
-  }
-
-  .heroContent p {
-    font-size: 1em;
-  }
-
+  
   .ctaButtons {
-    display: flex;
     flex-direction: column;
     align-items: center;
   }
-
+  
   .ctaButtons a {
-    width: 80%;
-    margin: 8px 0;
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  .hero::after {
+    display: none;
   }
 }

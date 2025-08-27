@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import useSignUp from '../hooks/useSignUp';
+import styles from './SignUpPage.module.css';
 
 const SignUpPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -14,166 +16,152 @@ const SignUpPage: React.FC = () => {
     await createCheckoutSession({ name, email, password, phoneNumber, plan });
   };
 
+  const planDetails = {
+    monthly: {
+      price: '$1',
+      period: '/month',
+      features: ['All exercises & logging', 'Goal & routine tracking', 'Progress charts & reports', 'Email support']
+    },
+    yearly: {
+      price: '$10',
+      period: '/year',
+      equivalent: '≈ $0.83/mo',
+      features: ['Everything in Monthly', 'Priority support', 'Early feature access', 'Annual progress export']
+    }
+  };
+
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>Sign Up</h2>
-      <form onSubmit={handleSignUp} style={styles.form}>
-        <div style={styles.formGroup}>
-          <label htmlFor="name" style={styles.label}>Name:</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            style={styles.input}
-            required
-          />
-        </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="email" style={styles.label}>Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={styles.input}
-            required
-          />
-        </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="password" style={styles.label}>Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={styles.input}
-            required
-          />
-        </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="phoneNumber" style={styles.label}>Phone Number:</label>
-          <input
-            type="tel"
-            id="phoneNumber"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            style={styles.input}
-            required
-          />
-        </div>
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Choose a Plan:</label>
-          <div style={styles.planSelector}>
-            <label style={styles.planLabel}>
-              <input
-                type="radio"
-                name="plan"
-                value="monthly"
-                checked={plan === 'monthly'}
-                onChange={() => setPlan('monthly')}
-                style={styles.radioInput}
-              />
-              Monthly
-            </label>
-            <label style={styles.planLabel}>
-              <input
-                type="radio"
-                name="plan"
-                value="yearly"
-                checked={plan === 'yearly'}
-                onChange={() => setPlan('yearly')}
-                style={styles.radioInput}
-              />
-              Yearly
-            </label>
+    <div className={styles.signupContainer}>
+      <div className={styles.signupCard}>
+        <h1 className={styles.heading}>Join FitTracker</h1>
+        <p className={styles.subheading}>
+          Start your fitness journey today with personalized workouts and progress tracking
+        </p>
+        
+        <form onSubmit={handleSignUp} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label htmlFor="name" className={styles.label}>Full Name</label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className={styles.input}
+              placeholder="Enter your full name"
+              required
+            />
           </div>
+          
+          <div className={styles.formGroup}>
+            <label htmlFor="email" className={styles.label}>Email Address</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={styles.input}
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          
+          <div className={styles.formGroup}>
+            <label htmlFor="password" className={styles.label}>Password</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={styles.input}
+              placeholder="Create a strong password"
+              required
+            />
+          </div>
+          
+          <div className={styles.formGroup}>
+            <label htmlFor="phoneNumber" className={styles.label}>Phone Number</label>
+            <input
+              type="tel"
+              id="phoneNumber"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className={styles.input}
+              placeholder="Enter your phone number"
+              required
+            />
+          </div>
+          
+          <div className={styles.planSection}>
+            <div className={styles.label}>Choose Your Plan</div>
+            <div className={styles.planCards}>
+              <label 
+                className={`${styles.planCard} ${plan === 'monthly' ? styles.selected : ''}`}
+                htmlFor="monthly-plan"
+              >
+                <input
+                  type="radio"
+                  id="monthly-plan"
+                  name="plan"
+                  value="monthly"
+                  checked={plan === 'monthly'}
+                  onChange={() => setPlan('monthly')}
+                  className={styles.hiddenRadio}
+                />
+                <div className={styles.planTitle}>Monthly</div>
+                <div className={styles.planPrice}>{planDetails.monthly.price}</div>
+                <div className={styles.planPeriod}>{planDetails.monthly.period}</div>
+                <ul className={styles.planFeatures}>
+                  {planDetails.monthly.features.map((feature) => (
+                    <li key={feature}>{feature}</li>
+                  ))}
+                </ul>
+              </label>
+              
+              <label 
+                className={`${styles.planCard} ${plan === 'yearly' ? styles.selected : ''}`}
+                htmlFor="yearly-plan"
+              >
+                <div className={styles.yearlyBadge}>Save $2</div>
+                <input
+                  type="radio"
+                  id="yearly-plan"
+                  name="plan"
+                  value="yearly"
+                  checked={plan === 'yearly'}
+                  onChange={() => setPlan('yearly')}
+                  className={styles.hiddenRadio}
+                />
+                <div className={styles.planTitle}>Yearly</div>
+                <div className={styles.planPrice}>{planDetails.yearly.price}</div>
+                <div className={styles.planPeriod}>{planDetails.yearly.period}</div>
+                <div className={styles.planPeriod}>{planDetails.yearly.equivalent}</div>
+                <ul className={styles.planFeatures}>
+                  {planDetails.yearly.features.map((feature) => (
+                    <li key={feature}>{feature}</li>
+                  ))}
+                </ul>
+              </label>
+            </div>
+          </div>
+          
+          <button type="submit" className={styles.submitButton} disabled={loading}>
+            {loading ? 'Processing...' : 'Proceed to Payment'}
+          </button>
+          
+          {error && (
+            <div className={styles.errorMessage}>
+              {error}
+            </div>
+          )}
+        </form>
+        
+        <div className={styles.loginLink}>
+          Already have an account? <Link to="/login">Sign in here</Link>
         </div>
-        <button type="submit" style={styles.button} disabled={loading}>
-          {loading ? 'Processing...' : 'Proceed to Payment'}
-        </button>
-        {error && <p style={styles.errorMessage}>{error}</p>}
-      </form>
+      </div>
     </div>
   );
 };
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '100vh',
-    background: 'linear-gradient(135deg, #000000, #111111, #330000)',
-    padding: '20px',
-  },
-  heading: {
-    marginBottom: '30px',
-    color: '#ffffff',
-    fontSize: '2.5em',
-    textAlign: 'center',
-  },
-  form: {
-    backgroundColor: '#fff',
-    padding: '40px',
-    borderRadius: '8px',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-    width: '100%',
-    maxWidth: '400px',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  formGroup: {
-    marginBottom: '20px',
-  },
-  label: {
-    display: 'block',
-    marginBottom: '8px',
-    fontWeight: 'bold',
-    color: '#555',
-  },
-  input: {
-    width: '100%',
-    padding: '12px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    fontSize: '1em',
-    boxSizing: 'border-box',
-    backgroundColor: '#f9f9f9',
-    color: '#333',
-    outline: 'none',
-  },
-  planSelector: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    marginTop: '10px',
-  },
-  planLabel: {
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-  },
-  radioInput: {
-    marginRight: '8px',
-  },
-  button: {
-    backgroundColor: '#007bff',
-    color: 'white',
-    padding: '12px 20px',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '1.1em',
-    marginTop: '10px',
-    transition: 'background-color 0.3s ease',
-  },
-  errorMessage: {
-    color: 'red',
-    marginTop: '10px',
-    textAlign: 'center',
-  },
-} as const;
 
 export default SignUpPage;
 
