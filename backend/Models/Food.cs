@@ -42,8 +42,6 @@ namespace Fitness.Models
         public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAtUtc { get; set; } = DateTime.UtcNow;
         
-        [Timestamp]
-        public byte[] RowVersion { get; set; } = new byte[0];
         
         // Navigation properties
         public virtual ICollection<IntakeEntry> IntakeEntries { get; set; } = new List<IntakeEntry>();

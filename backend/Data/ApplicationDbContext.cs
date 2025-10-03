@@ -28,6 +28,17 @@ namespace Fitness.Data
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<GoalHistory> GoalHistories { get; set; }
 
+        public override int SaveChanges()
+        {
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -55,6 +66,7 @@ namespace Fitness.Data
                 .HasIndex(f => f.Name)
                 .IsUnique()
                 .HasFilter("\"IsSystem\" = true");
+
 
             // Configure relationships
             modelBuilder.Entity<Food>()

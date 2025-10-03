@@ -77,7 +77,6 @@ namespace Fitness.Services
                     Tags = f.Tags,
                     CreatedAtUtc = f.CreatedAtUtc,
                     UpdatedAtUtc = f.UpdatedAtUtc,
-                    RowVersion = Convert.ToBase64String(f.RowVersion)
                 })
                 .ToListAsync();
                 
@@ -104,7 +103,6 @@ namespace Fitness.Services
                     Tags = f.Tags,
                     CreatedAtUtc = f.CreatedAtUtc,
                     UpdatedAtUtc = f.UpdatedAtUtc,
-                    RowVersion = Convert.ToBase64String(f.RowVersion)
                 })
                 .FirstOrDefaultAsync();
                 
@@ -153,7 +151,6 @@ namespace Fitness.Services
                 Tags = food.Tags,
                 CreatedAtUtc = food.CreatedAtUtc,
                 UpdatedAtUtc = food.UpdatedAtUtc,
-                RowVersion = Convert.ToBase64String(food.RowVersion)
             };
 
             await _auditService.CreateAuditLogAsync(userId, "Food", food.Id.ToString(), "Create", foodResponse);
@@ -166,12 +163,6 @@ namespace Fitness.Services
             var food = await _context.Foods.FirstOrDefaultAsync(f => f.Id == id && f.OwnerUserId == userId && !f.IsSystem);
             if (food == null) return null;
             
-            // Check concurrency
-            var currentRowVersion = Convert.ToBase64String(food.RowVersion);
-            if (currentRowVersion != ifMatch)
-            {
-                throw new InvalidOperationException("Concurrency conflict - food has been modified by another user");
-            }
             
             // Validate calories from macros
             if (!await ValidateCaloriesFromMacrosAsync(foodDto))
@@ -208,7 +199,6 @@ namespace Fitness.Services
                 Tags = food.Tags,
                 CreatedAtUtc = food.CreatedAtUtc,
                 UpdatedAtUtc = food.UpdatedAtUtc,
-                RowVersion = Convert.ToBase64String(food.RowVersion)
             };
 
             await _auditService.CreateAuditLogAsync(userId, "Food", food.Id.ToString(), "Update", foodResponse);
@@ -246,7 +236,6 @@ namespace Fitness.Services
                 Tags = food.Tags,
                 CreatedAtUtc = food.CreatedAtUtc,
                 UpdatedAtUtc = food.UpdatedAtUtc,
-                RowVersion = Convert.ToBase64String(food.RowVersion)
             };
             
             _context.Foods.Remove(food);
@@ -298,7 +287,6 @@ namespace Fitness.Services
                 Tags = clonedFood.Tags,
                 CreatedAtUtc = clonedFood.CreatedAtUtc,
                 UpdatedAtUtc = clonedFood.UpdatedAtUtc,
-                RowVersion = Convert.ToBase64String(clonedFood.RowVersion)
             };
         }
         

@@ -288,7 +288,6 @@ namespace Fitness.Services
                     Tags = entry.Food.Tags,
                     CreatedAtUtc = entry.Food.CreatedAtUtc,
                     UpdatedAtUtc = entry.Food.UpdatedAtUtc,
-                    RowVersion = Convert.ToBase64String(entry.Food.RowVersion)
                 },
                 QuantityGrams = entry.QuantityGrams,
                 LoggedAtUtc = entry.LoggedAtUtc,
