@@ -41,6 +41,12 @@ builder.Services.AddScoped<IDayRoutineExerciseService, DayRoutineExerciseService
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IStripeService, StripeService>();
 
+// Register new nutrition-related services
+builder.Services.AddScoped<IFoodService, FoodService>();
+builder.Services.AddScoped<IIntakeService, IntakeService>();
+builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IAuditService, AuditService>();
+
 // Configure Identity
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
