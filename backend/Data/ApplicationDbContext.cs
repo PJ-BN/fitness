@@ -51,9 +51,6 @@ namespace Fitness.Data
             modelBuilder.Entity<Food>()
                 .HasIndex(f => new { f.IsSystem, f.Name });
 
-            // Configure IntakeEntry indexes
-            modelBuilder.Entity<IntakeEntry>()
-                .HasIndex(ie => new { ie.UserId, ie.LocalDate });
 
             // Configure Food name uniqueness per owner scope
             modelBuilder.Entity<Food>()

@@ -21,9 +21,6 @@ namespace Fitness.Models
         
         public DateTime LoggedAtUtc { get; set; }
         
-        [Column(TypeName = "date")]
-        public DateOnly LocalDate { get; set; } // Computed daily bucket in user's timezone
-        
         public IntakeSource Source { get; set; } = IntakeSource.Manual;
         
         public string? Notes { get; set; }

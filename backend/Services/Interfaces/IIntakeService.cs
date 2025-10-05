@@ -11,6 +11,5 @@ namespace Fitness.Services.Interfaces
         Task<IEnumerable<IntakeEntryResponseDto>> CreateBulkIntakeEntriesAsync(BulkIntakeRequestDto bulkRequest, string userId, string? idempotencyKey = null);
         Task<IntakeEntryResponseDto?> UpdateIntakeEntryAsync(Guid id, IntakeEntryDto entryDto, string userId);
         Task<bool> DeleteIntakeEntryAsync(Guid id, string userId);
-        Task RecomputeDailySummaryAsync(string userId, DateOnly localDate);
     }
 }
