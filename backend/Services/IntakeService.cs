@@ -24,8 +24,8 @@ namespace Fitness.Services
                 
             if (date.HasValue)
             {
-                var startDate = date.Value.ToDateTime(TimeOnly.MinValue);
-                var endDate = date.Value.ToDateTime(TimeOnly.MaxValue);
+                var startDate = DateTime.SpecifyKind(date.Value.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc);
+                var endDate = DateTime.SpecifyKind(date.Value.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc);
                 query = query.Where(ie => ie.LoggedAtUtc >= startDate && ie.LoggedAtUtc <= endDate);
             }
             
@@ -38,8 +38,8 @@ namespace Fitness.Services
         
         public async Task<IEnumerable<IntakeEntryResponseDto>> GetIntakeEntriesRangeAsync(string userId, DateOnly startDate, DateOnly endDate)
         {
-            var startDateTime = startDate.ToDateTime(TimeOnly.MinValue);
-            var endDateTime = endDate.ToDateTime(TimeOnly.MaxValue);
+            var startDateTime = DateTime.SpecifyKind(startDate.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc);
+            var endDateTime = DateTime.SpecifyKind(endDate.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc);
             
             var entries = await _context.IntakeEntries
                 .Include(ie => ie.Food)

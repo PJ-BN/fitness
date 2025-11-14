@@ -20,19 +20,14 @@ namespace Fitness.Controllers
         }
         
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<IEnumerable<IntakeEntryResponseDto>>>> GetIntakeEntries([FromQuery] string? date)
+        public async Task<ActionResult<ApiResponse<IEnumerable<IntakeEntryResponseDto>>>> GetIntakeEntries([FromQuery] DateOnly? date)
         {
             try
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-                DateOnly? parsedDate = null;
-                
-                if (!string.IsNullOrEmpty(date) && DateOnly.TryParse(date, out var d))
-                {
-                    parsedDate = d;
-                }
-                
-                var entries = await _intakeService.GetIntakeEntriesAsync(userId, parsedDate);
+                var userId = User.FindFirstValue("user_id") ?? User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+
+                var entries = await _intakeService.GetIntakeEntriesAsync(userId, date);
                 
                 return Ok(new ApiResponse<IEnumerable<IntakeEntryResponseDto>>
                 {
@@ -46,7 +41,7 @@ namespace Fitness.Controllers
                 return StatusCode(500, new ApiResponse<IEnumerable<IntakeEntryResponseDto>>
                 {
                     Success = false,
-                    Message = "An error occurred while retrieving intake entries"
+                    Message = $"An error occurred while retrieving intake entries {ex.Message}"
                 });
             }
         }
@@ -121,41 +116,7 @@ namespace Fitness.Controllers
             }
         }
         
-        [HttpPost("bulk")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<IntakeEntryResponseDto>>>> CreateBulkIntakeEntries([FromBody] BulkIntakeRequestDto bulkRequest)
-        {
-            try
-            {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-                var idempotencyKey = Request.Headers["Idempotency-Key"].FirstOrDefault();
-                
-                var entries = await _intakeService.CreateBulkIntakeEntriesAsync(bulkRequest, userId, idempotencyKey);
-                
-                return Ok(new ApiResponse<IEnumerable<IntakeEntryResponseDto>>
-                {
-                    Success = true,
-                    Data = entries,
-                    Message = $"{entries.Count()} intake entries created successfully"
-                });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new ApiResponse<IEnumerable<IntakeEntryResponseDto>>
-                {
-                    Success = false,
-                    Message = ex.Message
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new ApiResponse<IEnumerable<IntakeEntryResponseDto>>
-                {
-                    Success = false,
-                    Message = "An error occurred while creating bulk intake entries"
-                });
-            }
-        }
-        
+       
         [HttpPatch("{id}")]
         public async Task<ActionResult<ApiResponse<IntakeEntryResponseDto>>> UpdateIntakeEntry(Guid id, [FromBody] IntakeEntryDto entryDto)
         {
@@ -211,7 +172,8 @@ namespace Fitness.Controllers
         {
             try
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+                var userId = User.FindFirstValue("user_id") ?? User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
                 var success = await _intakeService.DeleteIntakeEntryAsync(id, userId);
                 
                 if (!success)
