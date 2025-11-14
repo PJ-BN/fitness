@@ -2,7 +2,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import styles from './Navbar.module.css';
-import { FaTachometerAlt, FaClipboardList, FaDumbbell, FaBullseye, FaChartBar, FaAppleAlt, FaUser, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
+import { FaTachometerAlt, FaClipboardList, FaDumbbell, FaChartBar, FaAppleAlt, FaUser, FaSignOutAlt, FaBars, FaTimes, FaFire } from 'react-icons/fa';
+import ThemeToggle from '../../components/ThemeToggle';
 
 interface NavbarProps {
   isCollapsed: boolean;
@@ -26,14 +27,18 @@ const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onToggle }) => {
         <Link to="/workout-logs-view" className={styles.navItem}><FaClipboardList /><span>Workout Logs</span></Link>
         <Link to="/exercise" className={styles.navItem}><FaDumbbell /><span>Exercise</span></Link>
         <Link to="/report" className={styles.navItem}><FaChartBar /><span>Report</span></Link>
-        <Link to="/nutrition" className={styles.navItem}><FaAppleAlt /><span>Nutrition</span></Link>
+  <Link to="/nutrition" className={styles.navItem}><FaAppleAlt /><span>Nutrition</span></Link>
+  <Link to="/calories" className={styles.navItem}><FaFire /><span>Calories</span></Link>
       </div>
       <div className={styles.profileSection}>
-        <Link to="/profile" className={styles.navItem}><FaUser /><span>Profile</span></Link>
-        <div className={styles.navItem} onClick={handleLogout}><FaSignOutAlt /><span>Logout</span></div>
-        <div className={styles.collapseButton} onClick={onToggle}>
-          {isCollapsed ? <FaBars /> : <FaTimes />}
+        <div className={styles.themeToggleWrapper}>
+          <ThemeToggle />
         </div>
+        <Link to="/profile" className={styles.navItem}><FaUser /><span>Profile</span></Link>
+        <button type="button" className={styles.navItem} onClick={handleLogout} style={{background:'none',border:'none',cursor:'pointer'}}><FaSignOutAlt /><span>Logout</span></button>
+        <button type="button" className={styles.collapseButton} onClick={onToggle} style={{background:'none',border:'none',cursor:'pointer'}}>
+          {isCollapsed ? <FaBars /> : <FaTimes />}
+        </button>
       </div>
     </div>
   );

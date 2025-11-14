@@ -1,0 +1,314 @@
+/* Modern Theme Support */
+.container { 
+  display: grid; 
+  gap: 2rem; 
+  grid-template-columns: 380px 1fr; 
+  align-items: start; 
+}
+
+@media (max-width: 900px){ 
+  .container { 
+    grid-template-columns: 1fr; 
+  } 
+}
+
+.panel { 
+  background: var(--color-surface); 
+  padding: 2rem; 
+  border-radius: 16px; 
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+.panel:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.panelHeader { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--color-border);
+  transition: border-color 0.3s ease;
+}
+
+.panelTitle { 
+  font-size: 1.5rem; 
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.foodList, .entryList { 
+  list-style: none; 
+  margin: 0; 
+  padding: 0; 
+  max-height: 500px; 
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.foodList::-webkit-scrollbar, .entryList::-webkit-scrollbar {
+  width: 8px;
+}
+
+.foodList::-webkit-scrollbar-track, .entryList::-webkit-scrollbar-track {
+  background: var(--color-bg-tertiary);
+  border-radius: 4px;
+}
+
+.foodList::-webkit-scrollbar-thumb, .entryList::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 4px;
+}
+
+.foodItem, .entryItem { 
+  padding: 1rem; 
+  border-radius: 12px; 
+  display: flex; 
+  justify-content: space-between; 
+  gap: 1rem; 
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  margin-bottom: 0.75rem;
+  background: var(--color-bg-secondary);
+}
+
+.foodItem:hover, .entryItem:hover { 
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+.entryItem {
+  cursor: default;
+}
+
+.entryItem strong {
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.entryItem small {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  transition: color 0.3s ease;
+}
+
+.macrosRow { 
+  display: flex; 
+  gap: 0.5rem; 
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.badge { 
+  background: linear-gradient(135deg, #059669, #047857);
+  color: #ffffff;
+  padding: 4px 10px; 
+  border-radius: 6px; 
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2);
+}
+
+.summaryGrid { 
+  display: grid; 
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 1rem; 
+  margin-top: 1.5rem; 
+}
+
+.summaryCard { 
+  background: var(--color-bg-secondary);
+  padding: 1.25rem; 
+  border-radius: 12px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.5rem;
+  border: 1px solid var(--color-border);
+  transition: all 0.3s ease;
+}
+
+.summaryCard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
+}
+
+.summaryLabel { 
+  font-size: 0.75rem; 
+  letter-spacing: 0.5px; 
+  text-transform: uppercase; 
+  color: var(--color-text-muted);
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.summaryValue { 
+  font-size: 1.75rem; 
+  font-weight: 700;
+  color: var(--color-primary);
+  transition: color 0.3s ease;
+}
+
+.form { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 1rem; 
+}
+
+.select, .input { 
+  width: 100%; 
+  padding: 0.875rem 1rem; 
+  border-radius: 10px; 
+  border: 2px solid var(--color-border); 
+  background: var(--color-surface); 
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.select:focus, .input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.select:hover, .input:hover {
+  border-color: var(--color-border-strong);
+}
+
+.button { 
+  background: linear-gradient(135deg, #059669, #047857);
+  color: #ffffff; 
+  border: none; 
+  padding: 0.875rem 1.5rem; 
+  font-size: 1rem; 
+  border-radius: 10px; 
+  cursor: pointer; 
+  font-weight: 600; 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+}
+
+.button:disabled { 
+  opacity: 0.5; 
+  cursor: not-allowed;
+  transform: none;
+}
+
+.inlineActions { 
+  display: flex; 
+  gap: 0.5rem; 
+  align-items: center;
+}
+
+.smallBtn { 
+  background: var(--color-bg-secondary); 
+  border: 1px solid var(--color-border); 
+  color: var(--color-text-secondary); 
+  padding: 6px 12px; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.smallBtn:hover {
+  background: var(--color-bg-tertiary);
+  transform: translateY(-1px);
+}
+
+.smallBtn.danger { 
+  background: var(--color-secondary-light); 
+  color: var(--color-secondary);
+  border-color: var(--color-secondary-light);
+}
+
+.smallBtn.danger:hover {
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+
+.error { 
+  color: var(--color-secondary); 
+  font-size: 0.875rem;
+  background: var(--color-secondary-light);
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-secondary-light);
+  transition: all 0.3s ease;
+}
+
+.empty { 
+  font-size: 0.875rem; 
+  color: var(--color-text-muted); 
+  padding: 2rem 1rem;
+  text-align: center;
+  font-style: italic;
+  transition: color 0.3s ease;
+}
+
+.datePicker { 
+  margin-bottom: 1rem;
+  cursor: pointer;
+  position: relative;
+  padding-right: 2.5rem !important;
+}
+
+.datePicker::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  position: absolute;
+  right: 1rem;
+  padding: 0.5rem;
+  background: linear-gradient(135deg, #059669, #047857);
+  border-radius: 6px;
+  color: white;
+  opacity: 1;
+  width: 20px;
+  height: 20px;
+}
+
+.datePicker::-webkit-calendar-picker-indicator:hover {
+  background: linear-gradient(135deg, #047857, #065f46);
+  transform: scale(1.1);
+}
+
+.spinner { 
+  width: 18px; 
+  height: 18px; 
+  border: 3px solid rgba(255,255,255,.3); 
+  border-top-color: #fff; 
+  border-radius: 50%; 
+  animation: spin .8s linear infinite; 
+}
+
+@keyframes spin { 
+  to { 
+    transform: rotate(360deg);
+  } 
+}

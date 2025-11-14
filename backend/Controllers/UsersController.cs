@@ -1,145 +1,282 @@
 using Fitness.Models;
+using Fitness.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Fitness.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")] // Only Admins can manage users
     public class UsersController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UsersController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public UsersController(UserManager<User> userManager)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
         }
 
-        // GET: api/Users
-        [HttpGet]
-        public async Task<ActionResult<ApiResponse<IEnumerable<User>>>> GetUsers()
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<ActionResult<ApiResponse<UserProfileDto>>> GetCurrentUser()
         {
-            var users = _userManager.Users.ToList();
-            return Ok(ApiResponse<IEnumerable<User>>.SuccessResponse(users));
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _userManager.FindByIdAsync(userId!);
+
+                if (user == null)
+                {
+                    return NotFound(new ApiResponse<UserProfileDto>
+                    {
+                        Success = false,
+                        Message = "User not found"
+                    });
+                }
+
+                var profile = new UserProfileDto
+                {
+                    Id = user.Id,
+                    Email = user.Email!,
+                    Name = user.Name,
+                    DisplayName = user.DisplayName,
+                    TimeZone = user.TimeZone,
+                    PreferredUnits = user.PreferredUnits,
+                    Gender = user.Gender,
+                    DateOfBirth = user.DateOfBirth,
+                    WeightKg = user.WeightKg,
+                    HeightCm = user.HeightCm,
+                    DefaultPrivacy = user.DefaultPrivacy,
+                    CreatedAtUtc = user.CreatedAtUtc
+                };
+
+                return Ok(new ApiResponse<UserProfileDto>
+                {
+                    Success = true,
+                    Data = profile,
+                    Message = "Profile retrieved successfully"
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse<UserProfileDto>
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving profile"
+                });
+            }
         }
 
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ApiResponse<User>>> GetUser(string id)
+        [HttpPatch("me")]
+        [Authorize]
+        public async Task<ActionResult<ApiResponse<UserProfileDto>>> UpdateCurrentUser([FromBody] UpdateUserProfileDto updateDto)
         {
-            var user = await _userManager.FindByIdAsync(id);
-
-            if (user == null)
+            try
             {
-                return NotFound(ApiResponse<User>.ErrorResponse("User not found."));
-            }
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _userManager.FindByIdAsync(userId!);
 
-            return Ok(ApiResponse<User>.SuccessResponse(user));
+                if (user == null)
+                {
+                    return NotFound(new ApiResponse<UserProfileDto>
+                    {
+                        Success = false,
+                        Message = "User not found"
+                    });
+                }
+
+                if (updateDto.DisplayName != null) user.DisplayName = updateDto.DisplayName;
+                if (updateDto.TimeZone != null) user.TimeZone = updateDto.TimeZone;
+                if (updateDto.PreferredUnits.HasValue) user.PreferredUnits = updateDto.PreferredUnits.Value;
+                if (updateDto.Gender != null) user.Gender = updateDto.Gender;
+                if (updateDto.DateOfBirth.HasValue) user.DateOfBirth = updateDto.DateOfBirth;
+                if (updateDto.WeightKg.HasValue) user.WeightKg = updateDto.WeightKg;
+                if (updateDto.HeightCm.HasValue) user.HeightCm = updateDto.HeightCm;
+                if (updateDto.DefaultPrivacy != null) user.DefaultPrivacy = updateDto.DefaultPrivacy;
+
+                user.UpdatedAtUtc = DateTime.UtcNow;
+                var result = await _userManager.UpdateAsync(user);
+
+                if (!result.Succeeded)
+                {
+                    return BadRequest(new ApiResponse<UserProfileDto>
+                    {
+                        Success = false,
+                        Message = "Failed to update profile"
+                    });
+                }
+
+                var profile = new UserProfileDto
+                {
+                    Id = user.Id,
+                    Email = user.Email!,
+                    Name = user.Name,
+                    DisplayName = user.DisplayName,
+                    TimeZone = user.TimeZone,
+                    PreferredUnits = user.PreferredUnits,
+                    Gender = user.Gender,
+                    DateOfBirth = user.DateOfBirth,
+                    WeightKg = user.WeightKg,
+                    HeightCm = user.HeightCm,
+                    DefaultPrivacy = user.DefaultPrivacy,
+                    CreatedAtUtc = user.CreatedAtUtc
+                };
+
+                return Ok(new ApiResponse<UserProfileDto>
+                {
+                    Success = true,
+                    Data = profile,
+                    Message = "Profile updated successfully"
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse<UserProfileDto>
+                {
+                    Success = false,
+                    Message = "An error occurred while updating profile"
+                });
+            }
         }
 
-        // PUT: api/Users/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(string id, User user)
+        [HttpGet("me/goals")]
+        [Authorize]
+        public async Task<ActionResult<ApiResponse<UserGoalsDto>>> GetCurrentUserGoals()
         {
-            if (id != user.Id)
+            try
             {
-                return BadRequest(ApiResponse.ErrorResponse("User ID mismatch."));
-            }
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _userManager.FindByIdAsync(userId!);
 
-            var existingUser = await _userManager.FindByIdAsync(id);
-            if (existingUser == null)
+                if (user == null)
+                {
+                    return NotFound(new ApiResponse<UserGoalsDto>
+                    {
+                        Success = false,
+                        Message = "User not found"
+                    });
+                }
+
+                var goals = new UserGoalsDto
+                {
+                    DailyCalorieGoal = user.DailyCalorieGoal,
+                    MacroProteinPct = user.MacroProteinPct,
+                    MacroCarbsPct = user.MacroCarbsPct,
+                    MacroFatPct = user.MacroFatPct
+                };
+
+                if (user.DailyCalorieGoal.HasValue && user.MacroProteinPct.HasValue && 
+                    user.MacroCarbsPct.HasValue && user.MacroFatPct.HasValue)
+                {
+                    goals.RecommendedMacroGrams = new MacroGoalsDto
+                    {
+                        ProteinGoalGrams = (user.MacroProteinPct.Value / 100 * user.DailyCalorieGoal.Value) / 4,
+                        CarbsGoalGrams = (user.MacroCarbsPct.Value / 100 * user.DailyCalorieGoal.Value) / 4,
+                        FatGoalGrams = (user.MacroFatPct.Value / 100 * user.DailyCalorieGoal.Value) / 9
+                    };
+                }
+
+                return Ok(new ApiResponse<UserGoalsDto>
+                {
+                    Success = true,
+                    Data = goals,
+                    Message = "Goals retrieved successfully"
+                });
+            }
+            catch (Exception ex)
             {
-                return NotFound(ApiResponse.ErrorResponse("User not found."));
+                return StatusCode(500, new ApiResponse<UserGoalsDto>
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving goals"
+                });
             }
-
-            existingUser.Email = user.Email;
-            existingUser.UserName = user.Email; // UserName is usually the same as Email for Identity
-            existingUser.Name = user.Name;
-
-            var result = await _userManager.UpdateAsync(existingUser);
-
-            if (result.Succeeded)
-            {
-                return NoContent();
-            }
-
-            var errors = result.Errors.Select(e => e.Description).ToList();
-            return BadRequest(ApiResponse.ErrorResponse("Failed to update user.", errors));
         }
 
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(string id)
+        [HttpPut("me/goals")]
+        [Authorize]
+        public async Task<ActionResult<ApiResponse<UserGoalsDto>>> UpdateCurrentUserGoals([FromBody] UpdateUserGoalsDto updateDto)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
+            try
             {
-                return NotFound(ApiResponse.ErrorResponse("User not found."));
+                if (updateDto.MacroProteinPct.HasValue && updateDto.MacroCarbsPct.HasValue && updateDto.MacroFatPct.HasValue)
+                {
+                    var total = updateDto.MacroProteinPct.Value + updateDto.MacroCarbsPct.Value + updateDto.MacroFatPct.Value;
+                    if (Math.Abs(total - 100) > 0.1m)
+                    {
+                        return BadRequest(new ApiResponse<UserGoalsDto>
+                        {
+                            Success = false,
+                            Message = "Macro percentages must sum to 100"
+                        });
+                    }
+                }
+
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _userManager.FindByIdAsync(userId!);
+
+                if (user == null)
+                {
+                    return NotFound(new ApiResponse<UserGoalsDto>
+                    {
+                        Success = false,
+                        Message = "User not found"
+                    });
+                }
+
+                user.DailyCalorieGoal = updateDto.DailyCalorieGoal;
+                user.MacroProteinPct = updateDto.MacroProteinPct;
+                user.MacroCarbsPct = updateDto.MacroCarbsPct;
+                user.MacroFatPct = updateDto.MacroFatPct;
+                user.UpdatedAtUtc = DateTime.UtcNow;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (!result.Succeeded)
+                {
+                    return BadRequest(new ApiResponse<UserGoalsDto>
+                    {
+                        Success = false,
+                        Message = "Failed to update goals"
+                    });
+                }
+
+                var goals = new UserGoalsDto
+                {
+                    DailyCalorieGoal = user.DailyCalorieGoal,
+                    MacroProteinPct = user.MacroProteinPct,
+                    MacroCarbsPct = user.MacroCarbsPct,
+                    MacroFatPct = user.MacroFatPct
+                };
+
+                if (user.DailyCalorieGoal.HasValue && user.MacroProteinPct.HasValue && 
+                    user.MacroCarbsPct.HasValue && user.MacroFatPct.HasValue)
+                {
+                    goals.RecommendedMacroGrams = new MacroGoalsDto
+                    {
+                        ProteinGoalGrams = (user.MacroProteinPct.Value / 100 * user.DailyCalorieGoal.Value) / 4,
+                        CarbsGoalGrams = (user.MacroCarbsPct.Value / 100 * user.DailyCalorieGoal.Value) / 4,
+                        FatGoalGrams = (user.MacroFatPct.Value / 100 * user.DailyCalorieGoal.Value) / 9
+                    };
+                }
+
+                return Ok(new ApiResponse<UserGoalsDto>
+                {
+                    Success = true,
+                    Data = goals,
+                    Message = "Goals updated successfully"
+                });
             }
-
-            var result = await _userManager.DeleteAsync(user);
-
-            if (result.Succeeded)
+            catch (Exception ex)
             {
-                return NoContent();
+                return StatusCode(500, new ApiResponse<UserGoalsDto>
+                {
+                    Success = false,
+                    Message = "An error occurred while updating goals"
+                });
             }
-
-            var errors = result.Errors.Select(e => e.Description).ToList();
-            return BadRequest(ApiResponse.ErrorResponse("Failed to delete user.", errors));
-        }
-
-        // POST: api/Users/{id}/roles
-        [HttpPost("{id}/roles")]
-        public async Task<IActionResult> AssignRole(string id, [FromBody] string roleName)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound("User not found.");
-            }
-
-            if (!await _roleManager.RoleExistsAsync(roleName))
-            {
-                return NotFound("Role not found.");
-            }
-
-            var result = await _userManager.AddToRoleAsync(user, roleName);
-            if (result.Succeeded)
-            {
-                return Ok("Role assigned successfully.");
-            }
-
-            return BadRequest(result.Errors);
-        }
-
-        // DELETE: api/Users/{id}/roles
-        [HttpDelete("{id}/roles")]
-        public async Task<IActionResult> RemoveRole(string id, [FromBody] string roleName)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound("User not found.");
-            }
-
-            if (!await _roleManager.RoleExistsAsync(roleName))
-            {
-                return NotFound("Role not found.");
-            }
-
-            var result = await _userManager.RemoveFromRoleAsync(user, roleName);
-            if (result.Succeeded)
-            {
-                return Ok("Role removed successfully.");
-            }
-
-            return BadRequest(result.Errors);
         }
     }
 }

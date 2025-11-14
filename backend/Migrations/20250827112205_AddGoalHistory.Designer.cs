@@ -3,6 +3,7 @@ using System;
 using Fitness.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Fitness.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250827112205_AddGoalHistory")]
+    partial class AddGoalHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -262,6 +265,12 @@ namespace Fitness.Migrations
                     b.Property<decimal>("ProteinGramsPer100g")
                         .HasColumnType("decimal(6,2)");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("bytea");
+
                     b.Property<decimal?>("SodiumMg")
                         .HasColumnType("numeric");
 
@@ -375,6 +384,9 @@ namespace Fitness.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<DateOnly>("LocalDate")
+                        .HasColumnType("date");
+
                     b.Property<DateTime>("LoggedAtUtc")
                         .HasColumnType("timestamp with time zone");
 
@@ -398,7 +410,7 @@ namespace Fitness.Migrations
 
                     b.HasIndex("FoodId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "LocalDate");
 
                     b.ToTable("IntakeEntries");
                 });

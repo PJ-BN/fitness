@@ -18,9 +18,10 @@
   max-width: 1200px;
   margin: 0 auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--bg-light);
+  background-color: var(--color-bg-secondary);
   border-radius: 12px;
-  box-shadow: 0 8px 20px var(--shadow);
+  box-shadow: var(--shadow-md);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .header {
@@ -30,42 +31,46 @@
 
 .pageTitle {
   font-size: 3em;
-  color: var(--primary-color);
+  color: var(--color-primary);
   margin-bottom: 15px;
   font-weight: 700;
   letter-spacing: -0.5px;
+  transition: color 0.3s ease;
 }
 
 .pageSubtitle {
   font-size: 1.3em;
-  color: var(--text-light);
+  color: var(--color-text-secondary);
   max-width: 700px;
   margin: 0 auto;
   line-height: 1.6;
+  transition: color 0.3s ease;
 }
 
 .section {
   margin-bottom: 50px;
   padding: 30px;
-  background-color: var(--card-bg);
+  background-color: var(--color-surface);
   border-radius: 12px;
-  box-shadow: 0 4px 12px var(--shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  border: 1px solid var(--color-border);
 }
 
 .section:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px var(--shadow-hover);
+  box-shadow: var(--shadow-lg);
 }
 
 .sectionTitle {
   font-size: 2.2em;
-  color: var(--primary-color);
+  color: var(--color-primary);
   margin-top: 0;
   margin-bottom: 20px;
   font-weight: 600;
   position: relative;
   padding-bottom: 15px;
+  transition: color 0.3s ease;
 }
 
 .sectionTitle::after {
@@ -75,15 +80,16 @@
   left: 0;
   width: 80px;
   height: 4px;
-  background-color: var(--accent-color);
+  background-color: var(--color-primary);
   border-radius: 2px;
 }
 
 .sectionText {
   font-size: 1.1em;
-  color: var(--text-light);
+  color: var(--color-text-secondary);
   line-height: 1.7;
   margin-bottom: 20px;
+  transition: color 0.3s ease;
 }
 
 .nutrientGrid {
@@ -94,47 +100,52 @@
 }
 
 .nutrientCard {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 10px;
   padding: 25px;
-  box-shadow: 0 4px 10px var(--shadow);
-  transition: transform 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .nutrientCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px var(--shadow-hover);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
 }
 
 .nutrientCard h3 {
   font-size: 1.5em;
-  color: var(--primary-color);
+  color: var(--color-primary);
   margin-top: 0;
   margin-bottom: 15px;
+  transition: color 0.3s ease;
 }
 
 .cardText {
-  color: var(--text-light);
+  color: var(--color-text-secondary);
   line-height: 1.6;
   margin-bottom: 20px;
+  transition: color 0.3s ease;
 }
 
 .benefit {
-  color: var(--benefit-color);
+  color: var(--color-primary);
   font-weight: 600;
   margin-bottom: 10px;
   padding: 8px;
   border-radius: 6px;
-  background-color: rgba(76, 175, 80, 0.1);
+  background-color: var(--color-primary-light);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .caution {
-  color: var(--caution-color);
+  color: var(--color-secondary);
   font-weight: 600;
   padding: 8px;
   border-radius: 6px;
-  background-color: rgba(244, 67, 54, 0.1);
+  background-color: var(--color-secondary-light);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .benefitsList,

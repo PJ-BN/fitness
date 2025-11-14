@@ -12,6 +12,7 @@ import ExercisePage from '../pages/ExercisePage';
 import GoalPage from '../pages/GoalPage';
 import ReportPage from '../pages/ReportPage';
 import NutritionPage from '../pages/NutritionPage';
+import CalorieTrackerPage from '../pages/CalorieTrackerPage';
 import ProfilePage from '../pages/ProfilePage';
 import LoggedInLayout from '../layout/LoggedInLayout';
 import WorkoutLogPage from '../pages/WorkoutLogPage';
@@ -99,6 +100,16 @@ const router = createBrowserRouter([
       <ProtectedRoute>
         <LoggedInLayout>
           <NutritionPage />
+        </LoggedInLayout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/calories',
+    element: (
+      <ProtectedRoute>
+        <LoggedInLayout>
+          <CalorieTrackerPage />
         </LoggedInLayout>
       </ProtectedRoute>
     ),

@@ -1,15 +1,17 @@
 .container {
   padding: 4.5rem 0 3.5rem 0;
-  background-color: #f4f7f6;
+  background-color: var(--color-bg-primary);
   min-height: 100vh;
+  transition: background-color 0.3s ease;
 }
 
 .title {
   text-align: center;
   margin-bottom: 2.8rem;
-  color: #333;
+  color: var(--color-text-primary);
   font-size: 2.5rem;
   font-weight: 700;
+  transition: color 0.3s ease;
 }
 
 .headerSection {
@@ -35,10 +37,11 @@
 .selectLabel {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #374151;
+    color: var(--color-text-primary);
     margin-bottom: 0.25rem;
     text-align: center;
     width: 100%;
+    transition: color 0.3s ease;
 }
 
 .selectWrapper {
@@ -50,33 +53,34 @@
     width: 100%;
     padding: 0.6rem 2.5rem 0.6rem 1rem;
     font-size: 1rem;
-    border: 1.5px solid #cbd5e1;
+    border: 1.5px solid var(--color-border);
     border-radius: 0.5rem;
-    background: #f9fafb;
-    color: #1e293b;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
     appearance: none;
     outline: none;
-    transition: border-color 0.2s;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    transition: border-color 0.2s, background 0.3s ease, color 0.3s ease;
+    box-shadow: var(--shadow-sm);
     text-align: center;
 }
 .exerciseSelect:focus {
-    border-color: #6366f1;
-    background: #fff;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
 }
 .exerciseSelect option {
-    color: #1e293b;
-    background: #fff;
+    color: var(--color-text-primary);
+    background: var(--color-surface);
     font-size: 1rem;
 }
 
 .sectionDivider {
   width: 100%;
   height: 48px;
-  background: #181824;
+  background: var(--color-bg-tertiary);
   margin: 2.5rem 0 2.5rem 0;
   border-radius: 1.2rem;
   display: block;
+  transition: background 0.3s ease;
 }
 
 .graphSection {

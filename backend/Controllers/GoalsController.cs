@@ -3,6 +3,7 @@ using Fitness.Models.DTOs;
 using Fitness.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
@@ -106,6 +107,14 @@ namespace Fitness.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpGet("history")]
+        public async Task<ActionResult<ApiResponse<IEnumerable<GoalHistoryDto>>>> GetGoalHistory()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            var history = await _goalService.GetGoalHistoryAsync(userId);
+            return Ok(ApiResponse<IEnumerable<GoalHistoryDto>>.SuccessResponse(history));
         }
     }
 }

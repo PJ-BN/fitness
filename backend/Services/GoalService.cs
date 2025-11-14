@@ -1,5 +1,6 @@
 using Fitness.Data;
 using Fitness.Models;
+using Fitness.Models.DTOs;
 using Fitness.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -57,6 +58,25 @@ namespace Fitness.Services
             _context.Goals.Remove(goal);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<IEnumerable<GoalHistoryDto>> GetGoalHistoryAsync(string userId)
+        {
+            return await _context.GoalHistories
+                .Where(h => h.UserId == userId)
+                .OrderByDescending(h => h.EffectiveFromDate)
+                .Select(h => new GoalHistoryDto
+                {
+                    Id = h.Id,
+                    UserId = h.UserId,
+                    EffectiveFromDate = h.EffectiveFromDate,
+                    DailyCalorieGoal = h.DailyCalorieGoal,
+                    MacroProteinPct = h.MacroProteinPct,
+                    MacroCarbsPct = h.MacroCarbsPct,
+                    MacroFatPct = h.MacroFatPct,
+                    CreatedAtUtc = h.CreatedAtUtc
+                })
+                .ToListAsync();
         }
     }
 }
