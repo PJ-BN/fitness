@@ -134,7 +134,7 @@ const DashboardPage: React.FC = () => {
         <div className={`${styles.card} ${styles.chartCard}`}>
           <h2 className={styles.cardTitle}>Exercise Distribution</h2>
           {exerciseDistribution.length > 0 ? (
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer width="100%" height={500}>
               <PieChart>
                 <Pie
                   data={exerciseDistribution}
@@ -142,7 +142,7 @@ const DashboardPage: React.FC = () => {
                   cy="50%"
                   labelLine={false}
                   label={false}
-                  outerRadius={120}
+                  outerRadius={150}
                   fill="#8884d8"
                   dataKey="value"
                 >
