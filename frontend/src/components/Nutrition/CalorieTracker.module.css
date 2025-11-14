@@ -1,4 +1,4 @@
-/* Modern Light Theme */
+/* Modern Theme Support */
 .container { 
   display: grid; 
   gap: 2rem; 
@@ -13,17 +13,17 @@
 }
 
 .panel { 
-  background: #ffffff; 
+  background: var(--color-surface); 
   padding: 2rem; 
   border-radius: 16px; 
-  box-shadow: 0 4px 20px rgba(0,0,0,.08);
-  border: 1px solid #e5e7eb;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
 
 .panel:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0,0,0,.12);
+  box-shadow: var(--shadow-lg);
 }
 
 .panelHeader { 
@@ -32,14 +32,16 @@
   align-items: center; 
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid var(--color-border);
+  transition: border-color 0.3s ease;
 }
 
 .panelTitle { 
   font-size: 1.5rem; 
   font-weight: 700;
-  color: #1e293b;
+  color: var(--color-text-primary);
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .foodList, .entryList { 
@@ -57,12 +59,12 @@
 }
 
 .foodList::-webkit-scrollbar-track, .entryList::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: var(--color-bg-tertiary);
   border-radius: 4px;
 }
 
 .foodList::-webkit-scrollbar-thumb, .entryList::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: var(--color-border-strong);
   border-radius: 4px;
 }
 
@@ -76,12 +78,12 @@
   border: 1px solid transparent;
   transition: all 0.2s ease;
   margin-bottom: 0.75rem;
-  background: #f8fafc;
+  background: var(--color-bg-secondary);
 }
 
 .foodItem:hover, .entryItem:hover { 
-  background: #f1f5f9;
-  border-color: #059669;
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-primary);
   transform: translateX(4px);
 }
 
@@ -90,15 +92,17 @@
 }
 
 .entryItem strong {
-  color: #1e293b;
+  color: var(--color-text-primary);
   font-size: 1rem;
   display: block;
   margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
 }
 
 .entryItem small {
-  color: #64748b;
+  color: var(--color-text-muted);
   font-size: 0.875rem;
+  transition: color 0.3s ease;
 }
 
 .macrosRow { 
@@ -128,34 +132,36 @@
 }
 
 .summaryCard { 
-  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  background: var(--color-bg-secondary);
   padding: 1.25rem; 
   border-radius: 12px; 
   display: flex; 
   flex-direction: column; 
   gap: 0.5rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-border);
   transition: all 0.3s ease;
 }
 
 .summaryCard:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0,0,0,.1);
-  border-color: #059669;
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
 }
 
 .summaryLabel { 
   font-size: 0.75rem; 
   letter-spacing: 0.5px; 
   text-transform: uppercase; 
-  color: #64748b;
+  color: var(--color-text-muted);
   font-weight: 600;
+  transition: color 0.3s ease;
 }
 
 .summaryValue { 
   font-size: 1.75rem; 
   font-weight: 700;
-  color: #059669;
+  color: var(--color-primary);
+  transition: color 0.3s ease;
 }
 
 .form { 
@@ -168,9 +174,9 @@
   width: 100%; 
   padding: 0.875rem 1rem; 
   border-radius: 10px; 
-  border: 2px solid #e5e7eb; 
-  background: #ffffff; 
-  color: #1e293b;
+  border: 2px solid var(--color-border); 
+  background: var(--color-surface); 
+  color: var(--color-text-primary);
   font-size: 1rem;
   transition: all 0.2s ease;
   font-family: inherit;
@@ -178,12 +184,12 @@
 
 .select:focus, .input:focus {
   outline: none;
-  border-color: #059669;
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
 }
 
 .select:hover, .input:hover {
-  border-color: #cbd5e1;
+  border-color: var(--color-border-strong);
 }
 
 .button { 
@@ -221,9 +227,9 @@
 }
 
 .smallBtn { 
-  background: #f1f5f9; 
-  border: 1px solid #cbd5e1; 
-  color: #475569; 
+  background: var(--color-bg-secondary); 
+  border: 1px solid var(--color-border); 
+  color: var(--color-text-secondary); 
   padding: 6px 12px; 
   border-radius: 8px; 
   cursor: pointer; 
@@ -233,36 +239,38 @@
 }
 
 .smallBtn:hover {
-  background: #e2e8f0;
+  background: var(--color-bg-tertiary);
   transform: translateY(-1px);
 }
 
 .smallBtn.danger { 
-  background: #fee2e2; 
-  color: #dc2626;
-  border-color: #fecaca;
+  background: var(--color-secondary-light); 
+  color: var(--color-secondary);
+  border-color: var(--color-secondary-light);
 }
 
 .smallBtn.danger:hover {
-  background: #fecaca;
-  color: #b91c1c;
+  background: var(--color-secondary);
+  color: var(--color-white);
 }
 
 .error { 
-  color: #dc2626; 
+  color: var(--color-secondary); 
   font-size: 0.875rem;
-  background: #fee2e2;
+  background: var(--color-secondary-light);
   padding: 0.75rem;
   border-radius: 8px;
-  border: 1px solid #fecaca;
+  border: 1px solid var(--color-secondary-light);
+  transition: all 0.3s ease;
 }
 
 .empty { 
   font-size: 0.875rem; 
-  color: #94a3b8; 
+  color: var(--color-text-muted); 
   padding: 2rem 1rem;
   text-align: center;
   font-style: italic;
+  transition: color 0.3s ease;
 }
 
 .datePicker { 

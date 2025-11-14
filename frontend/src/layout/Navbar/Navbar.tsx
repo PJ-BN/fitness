@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import styles from './Navbar.module.css';
 import { FaTachometerAlt, FaClipboardList, FaDumbbell, FaChartBar, FaAppleAlt, FaUser, FaSignOutAlt, FaBars, FaTimes, FaFire } from 'react-icons/fa';
+import ThemeToggle from '../../components/ThemeToggle';
 
 interface NavbarProps {
   isCollapsed: boolean;
@@ -30,6 +31,9 @@ const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onToggle }) => {
   <Link to="/calories" className={styles.navItem}><FaFire /><span>Calories</span></Link>
       </div>
       <div className={styles.profileSection}>
+        <div className={styles.themeToggleWrapper}>
+          <ThemeToggle />
+        </div>
         <Link to="/profile" className={styles.navItem}><FaUser /><span>Profile</span></Link>
         <button type="button" className={styles.navItem} onClick={handleLogout} style={{background:'none',border:'none',cursor:'pointer'}}><FaSignOutAlt /><span>Logout</span></button>
         <button type="button" className={styles.collapseButton} onClick={onToggle} style={{background:'none',border:'none',cursor:'pointer'}}>

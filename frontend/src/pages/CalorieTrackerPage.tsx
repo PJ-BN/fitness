@@ -1,14 +1,20 @@
 import React from 'react';
 import CalorieTracker from '../components/Nutrition/CalorieTracker';
+import { useTheme } from '../contexts/ThemeContext';
 
 const CalorieTrackerPage: React.FC = () => {
+  const { theme } = useTheme();
+  
   return (
     <div style={{
       padding: '3rem 2rem', 
       maxWidth: 1400, 
       margin: '0 auto',
-      background: 'linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%)',
-      minHeight: '100vh'
+      background: theme === 'dark' 
+        ? 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)'
+        : 'linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%)',
+      minHeight: '100vh',
+      transition: 'background 0.3s ease'
     }}>
       <header style={{
         textAlign: 'center', 
@@ -16,9 +22,12 @@ const CalorieTrackerPage: React.FC = () => {
         padding: '2.5rem 2rem',
         background: 'linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%)',
         borderRadius: '20px',
-        boxShadow: '0 10px 40px rgba(5, 150, 105, 0.3)',
+        boxShadow: theme === 'dark'
+          ? '0 10px 40px rgba(5, 150, 105, 0.2)'
+          : '0 10px 40px rgba(5, 150, 105, 0.3)',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        transition: 'box-shadow 0.3s ease'
       }}>
         <div style={{
           position: 'absolute',
